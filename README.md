@@ -1,4 +1,3 @@
-
 # @variablesoftware/logface
 
 > A fun, lightweight, structured console-style logger with tag-based filtering for TypeScript projects.  

@@ -1,4 +1,3 @@
-
 import { describe, it, expect, vi } from "vitest";
 import { log, logMsg } from "../src";
 
