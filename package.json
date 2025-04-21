@@ -2,6 +2,7 @@
   "name": "@variablesoftware/logface",
   "version": "0.1.0",
   "description": "Structured console-style logger with filtering support",
+  "private": false,
   "keywords": [
     "logger",
     "console",
