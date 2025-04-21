@@ -1,7 +1,7 @@
-# @variablesoftware/logface
+# @variablesoftware/logface 🪵😎
 
 > A fun, lightweight, structured console-style logger with tag-based filtering for TypeScript projects.  
-> All the log fit for face. 😎
+> All the log fit for face. 🪵😎
 
 ## ✨ Features
 
