@@ -1,21 +1,45 @@
 {
-  "name": "@variablesoftware/logging",
+  "name": "@variablesoftware/logface",
   "version": "0.1.0",
   "description": "Structured console-style logger with filtering support",
+  "keywords": [
+    "logger",
+    "console",
+    "structured",
+    "typescript",
+    "debug",
+    "logface"
+  ],
+  "author": {
+    "name": "Rob Friedman",
+    "email": "bunkcode@variablesoftware.com",
+    "url": "https://github.com/variablesoftware"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "build": "tsc",
+    "clean": "rm -rf dist",
     "prepare": "husky install",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:build": "yarn clean && yarn build && yarn test"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/variablesoftware/logging"
   },
-  "author": "Rob Friedman",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^22.14.1",
     "husky": "^9.1.7",
     "typescript": "^5.3.3",
     "vitest": "^1.4.0"
