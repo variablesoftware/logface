@@ -27,14 +27,19 @@
     }
   },
   "type": "module",
+  "lint-staged": {
+  "**/*.{ts,js,mjs,cts}": "eslint --fix"
+},
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
     "dev": "vitest watch",
     "prepare": "husky install",
     "format:all": "prettier --write --log-level error .",
-    "prettier:check": "prettier --check .",
     "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "prettier:check": "prettier --check .",
+    "publish:npm": "yarn npm publish --access public",
     "test": "vitest run",
     "test:build": "yarn clean && yarn build && yarn test",
     "upgrade:latest": "yarn upgrade-interactive --latest"

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { log, logMsg } from "../src";
+import { log, logMsg } from "../src/index.js";
 
 describe("logface", () => {
   it("logMsg() should call console with the correct level", () => {
