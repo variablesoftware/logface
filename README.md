@@ -66,7 +66,7 @@ LOG=metrics,debug,auth* node app.js
 
 For wildcard matching, structured output, test helpers, global setup, and advanced filtering:
 
-➡️ [See LOGGING.md](./LOGGING.md)
+➡️ [See LOGGING.md for full logging level guidance](https://github.com/variablesoftware/logface/blob/main/LOGGING.md)
 
 ---
 
