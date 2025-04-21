@@ -45,3 +45,7 @@ Runs basic assertions to confirm output and tagged behavior.
 ---
 
 Built with ❤️ by [@variablesoftware](https://github.com/variablesoftware)
+
+## Badges
+
+[![npm](https://img.shields.io/npm/v/@variablesoftware/logface.svg)](https://www.npmjs.com/package/@variablesoftware/logface)
