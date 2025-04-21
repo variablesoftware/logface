@@ -1,13 +1,20 @@
 # @variablesoftware/logface 🪵😎
 
-> A fun, lightweight, structured console-style logger with tag-based filtering for TypeScript projects.  
-> All the log fit for face. 🪵😎
+[![npm](https://img.shields.io/npm/v/@variablesoftware/logface.svg)](https://www.npmjs.com/package/@variablesoftware/logface)
+
+> A fun, lightweight, structured console-style logger with tag-based filtering for TypeScript projects.
+
+---
 
 ## ✨ Features
 
 - Drop-in replacements for `console.*` methods
-- Optional `withTag()` to namespace logs
-- Supports filtering by tag or level via `LOG` or `LOG_VERBOSE` environment variables
+- Scoped tagging via `log.options({ tag })`
+- Filters logs with `LOG` or `LOG_VERBOSE` environment variables
+- Per-call configuration with timestamps and level formatting
+- Wildcard filtering support (e.g. `auth:*`, `metrics*`)
+
+---
 
 ## 🚀 Install
 
@@ -17,34 +24,51 @@ npm install @variablesoftware/logface
 yarn add @variablesoftware/logface
 ```
 
-## 🔧 Usage
+---
+
+## 🔧 Quick Usage
 
 ```ts
 import { log } from "@variablesoftware/logface";
 
 log.debug("booting up");
 log.warn("careful now");
-log.withTag("auth").info("user signed in");
+log.options({ tag: "auth" }).info("user signed in");
+log.options({ tag: "metrics", timestamp: true }).info("CPU: %d%%", 92);
 ```
 
-### Environment filtering
+---
+
+## 📤 Output Format
+
+```text
+[D][init] Booting...
+[I][auth] Login successful
+[L][metrics] 200 OK
+```
+
+Use `log.setup()` to enable timestamps or full level names.
+
+---
+
+## 🔍 Filtering
+
+Use `LOG` or `LOG_VERBOSE` to filter logs by tag or level:
 
 ```bash
-LOG=auth,debug node your-app.js
+LOG=auth node app.js
+LOG=metrics,debug,auth* node app.js
 ```
 
-## 🧪 Test
+---
 
-```bash
-yarn test
-```
+## 📚 Full Guide
 
-Runs basic assertions to confirm output and tagged behavior.
+For wildcard matching, structured output, test helpers, global setup, and advanced filtering:
+
+➡️ [See LOGGING.md](./LOGGING.md)
 
 ---
 
 Built with ❤️ by [@variablesoftware](https://github.com/variablesoftware)
 
-## Badges
-
-[![npm](https://img.shields.io/npm/v/@variablesoftware/logface.svg)](https://www.npmjs.com/package/@variablesoftware/logface)

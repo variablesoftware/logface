@@ -26,6 +26,7 @@ log.options({ tag: "metrics" }).info("CPU usage: %d%%", 93);
 ```
 
 These tags show up in the formatted log prefix:
+
 ```
 [I][metrics] CPU usage: 93%
 ```
