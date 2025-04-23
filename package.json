@@ -1,6 +1,6 @@
 {
   "name": "@variablesoftware/logface",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Structured console-style logger with filtering support",
   "keywords": [
     "logger",
@@ -15,15 +15,15 @@
     "email": "bunkcode@variablesoftware.com",
     "url": "https://github.com/variablesoftware"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/src/index.js",
+      "types": "./dist/src/index.d.ts"
     }
   },
   "type": "module",
@@ -44,7 +44,7 @@
     "publish:npm": "yarn npm publish --access public",
     "test": "vitest run",
     "test:build": "yarn clean && yarn build && yarn test",
-    "upgrade:latest": "yarn upgrade-interactive --latest",
+    "upgrade:latest": "yarn upgrade-interactive",
     "version:patch": "yarn version patch",
     "version:minor": "yarn version minor",
     "version:major": "yarn version major",
@@ -52,20 +52,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/variablesoftware/logging"
+    "url": "https://github.com/variablesoftware/logface"
   },
   "license": "MIT",
   "devDependencies": {
-    "@eslint/js": "^9.25.0",
+    "@eslint/js": "^9.25.1",
     "@types/node": "^22.14.1",
-    "@typescript-eslint/eslint-plugin": "^8.30.1",
-    "@typescript-eslint/parser": "^8.30.1",
-    "eslint": "^9.25.0",
+    "@typescript-eslint/eslint-plugin": "^8.31.0",
+    "@typescript-eslint/parser": "^8.31.0",
+    "eslint": "^9.25.1",
     "eslint-config-prettier": "^10.1.2",
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "typescript": "^5.8.3",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.2"
   },
   "packageManager": "yarn@4.9.1+sha512.f95ce356460e05be48d66401c1ae64ef84d163dd689964962c6888a9810865e39097a5e9de748876c2e0bf89b232d583c33982773e9903ae7a76257270986538"
 }
