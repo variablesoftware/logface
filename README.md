@@ -1,8 +1,8 @@
-# @variablesoftware/logface 🪵😎
+# @variablesoftware/logface 🎛️🪵😎
 
 [![npm](https://img.shields.io/npm/v/@variablesoftware/logface.svg)](https://www.npmjs.com/package/@variablesoftware/logface)
 
-> A fun, lightweight, structured console-style logger with tag-based filtering for TypeScript projects.
+> 🎛️🪵😎 A fun, lightweight, structured console-style logger with tag-based filtering for TypeScript projects.
 
 ---
 
@@ -70,5 +70,23 @@ For wildcard matching, structured output, test helpers, global setup, and advanc
 
 ---
 
-Built with ❤️ by [@variablesoftware](https://github.com/variablesoftware)
+## 📄 License
 
+MIT © Rob Friedman / Variable Software
+
+---
+
+> Built with ❤️ by [@variablesoftware](https://github.com/variablesoftware)  
+> Thank you for downloading and using this project. Pull requests are warmly welcomed!
+
+---
+
+## 🌐 Inclusive & Accessible Design
+
+- Naming, logging, error messages, and tests avoid cultural or ableist bias
+- Avoids assumptions about input/output formats or encodings
+- Faithfully reflects user data — no coercion or silent transformations
+- Designed for clarity, predictability, and parity with underlying platforms (e.g., Cloudflare APIs)
+- Works well in diverse, multilingual, and inclusive developer environments
+
+---
