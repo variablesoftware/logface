@@ -1,6 +1,9 @@
 /**
  * @variablesoftware/logface 🎛️🪵😎
  *
+ * @link https://github.com/variablesoftware/logface
+ * @link https://www.npmjs.com/package/@variablesoftware/logface
+ * @description
  * Structured logger for Node.js and edge runtimes.
  *
  * Features:
@@ -24,6 +27,7 @@
  * log.options({ tag: "api", levelShort: false }).warn("Rate limit exceeded");
  * log.options({ tag: "console" }).log("bare output ok");
  * ```
+ * @license MIT
  */
 
 /**
@@ -31,7 +35,6 @@
  * @public
  */
 export type LogLevel = "debug" | "info" | "warn" | "error" | "log";
-
 /**
  * Optional configuration for each log invocation or global setup.
  * @public

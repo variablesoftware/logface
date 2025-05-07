@@ -31,7 +31,12 @@
     "**/*.{ts,js,mjs,cts}": "eslint --fix"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && yarn minify",
+    "build:watch": "tsc --watch",
+    "build:release": "yarn build && yarn minify",
+    "minify": "yarn terser --timings --compress --mangle --toplevel --source-map includeSources dist/src/index.js --output dist/src/index.min.js",
+    "prebuild": "yarn clean",
+    "prepublishOnly": "yarn test:build",
     "clean": "rm -rf dist",
     "clean:all": "rm -rf dist && git tag -d $(git tag)",
     "dev": "vitest watch",
@@ -48,7 +53,7 @@
     "version:patch": "yarn version patch",
     "version:minor": "yarn version minor",
     "version:major": "yarn version major",
-    "release": "yarn clean && yarn build && git push && git push --tags && yarn npm publish --access public"
+    "release": "yarn clean && yarn build:release && git push && git push --tags && yarn npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -57,13 +62,17 @@
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.26.0",
+    "@microsoft/tsdoc": "^0.15.1",
+    "@microsoft/tsdoc-config": "^0.17.1",
     "@types/node": "^22.15.14",
     "@typescript-eslint/eslint-plugin": "^8.32.0",
     "@typescript-eslint/parser": "^8.32.0",
     "eslint": "^9.26.0",
     "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-tsdoc": "^0.4.0",
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
+    "terser": "^5.39.0",
     "typescript": "^5.8.3",
     "vitest": "^3.1.3"
   },
