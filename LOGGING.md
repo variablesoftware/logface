@@ -6,13 +6,13 @@ A deep dive into `@variablesoftware/logface` logging features, formatting option
 
 ## 📦 Supported Levels
 
-| Level  | Method         | Label | Console Method |
-|--------|----------------|-------|----------------|
-| Debug  | `log.debug()`  | `[D]` | `console.debug()` |
-| Info   | `log.info()`   | `[I]` | `console.info()`  |
-| Warn   | `log.warn()`   | `[W]` | `console.warn()`  |
-| Error  | `log.error()`  | `[E]` | `console.error()` |
-| Log    | `log.log()`    | `[L]` | `console.log()`   |
+| Level | Method        | Label | Console Method    |
+| ----- | ------------- | ----- | ----------------- |
+| Debug | `log.debug()` | `[D]` | `console.debug()` |
+| Info  | `log.info()`  | `[I]` | `console.info()`  |
+| Warn  | `log.warn()`  | `[W]` | `console.warn()`  |
+| Error | `log.error()` | `[E]` | `console.error()` |
+| Log   | `log.log()`   | `[L]` | `console.log()`   |
 
 ---
 
@@ -43,11 +43,14 @@ LOG=auth*,metrics,debug* node app.js
 ```
 
 ### ✨ Wildcard Matching
+
 - `auth*` matches: `auth`, `authLogin`, `auth:jwt`
 - `auth:*` matches: `auth`, `auth:signup`, `auth:*`
 
 ### ✅ Matching Conditions
+
 A log is printed if:
+
 - `tag` matches a filter
 - OR `level` matches a filter (e.g. `LOG=warn`)
 - OR no filter is set (default: allow all)
@@ -72,7 +75,7 @@ import { log, setup } from "@variablesoftware/logface";
 
 setup({
   levelShort: false, // full level names like [DEBUG]
-  timestamp: true,   // ISO timestamp prefix
+  timestamp: true, // ISO timestamp prefix
 });
 ```
 
@@ -111,4 +114,3 @@ log.options({ tag: "auth" }).info("message");
 ---
 
 Happy logging! 🪵
-

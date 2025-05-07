@@ -1,5 +1,5 @@
 /**
- * @variablesoftware/logface 🪵😎
+ * @variablesoftware/logface 🎛️🪵😎
  *
  * Structured logger for Node.js and edge runtimes.
  *
@@ -11,7 +11,7 @@
  * - Wildcard scope matching supported (e.g., `auth*`, `auth:*`)
  * - `withTag()` is deprecated and will be removed in a future release
  *
- * Usage:
+ * @example
  * ```ts
  * log.debug("Boot sequence initiated");
  * log.info("App started on port %d", 3000);
@@ -28,11 +28,13 @@
 
 /**
  * Valid logging levels that map to native `console` methods.
+ * @public
  */
 export type LogLevel = "debug" | "info" | "warn" | "error" | "log";
 
 /**
  * Optional configuration for each log invocation or global setup.
+ * @public
  */
 interface LogOptions {
   /** Tag to display in `[TAG]` scope brackets */
@@ -45,6 +47,7 @@ interface LogOptions {
 
 /**
  * Global log configuration options (used as fallback).
+ * @internal
  */
 let globalLogOptions: LogOptions = {
   levelShort: true,
@@ -53,14 +56,18 @@ let globalLogOptions: LogOptions = {
 
 /**
  * Update global logging defaults at runtime.
- * @param options partial overrides for global LogOptions
+ * @param options - Partial overrides for global LogOptions
+ * @public
  */
-export function setup(options: Partial<LogOptions>) {
+export function setup(options: Partial<LogOptions>): void {
   Object.assign(globalLogOptions, options);
 }
 
 /**
  * Attempt to determine the caller file/module name from the stack trace.
+ * Used for automatic tag inference if no tag is provided.
+ * @returns The inferred caller tag or "unknown"
+ * @internal
  */
 function getCallerTag(): string {
   const stack = new Error().stack;
@@ -77,34 +84,46 @@ function getCallerTag(): string {
 
 /**
  * Match a scope or level against a user-defined LOG pattern.
- * @param scope the tag or level name
- * @param pattern the filter string, supports wildcards
+ * Supports wildcards such as `auth*` and `auth:*`.
+ * @param scope - The tag or level name
+ * @param pattern - The filter string, supports wildcards
+ * @returns True if the scope matches the pattern
+ * @internal
  */
 function matchesScopeFilter(scope: string, pattern: string): boolean {
   if (pattern.endsWith("*")) {
     return scope.startsWith(pattern.slice(0, -1));
   } else if (pattern.endsWith(":*")) {
-    return scope === pattern.slice(0, -2) || scope.startsWith(pattern.slice(0, -1));
+    return (
+      scope === pattern.slice(0, -2) || scope.startsWith(pattern.slice(0, -1))
+    );
   }
   return scope === pattern;
 }
 
 /**
  * Emit a formatted log message at the specified level.
- * Handles filtering, prefix formatting, and routing.
+ * Handles filtering, prefix formatting, and routing to the appropriate console method.
+ * @param level - The log level
+ * @param args - Arguments to log
+ * @param options - Optional per-call log options
+ * @internal
  */
-function emitLog(level: LogLevel, args: unknown[], options?: LogOptions) {
+function emitLog(level: LogLevel, args: unknown[], options?: LogOptions): void {
   const env = typeof process !== "undefined" ? process.env : {};
   const filter = env.LOG || env.LOG_VERBOSE || "";
-  const filters = filter.split(",").map(s => s.trim()).filter(Boolean);
+  const filters = filter
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 
   const effectiveOptions = { ...globalLogOptions, ...options };
   const tag = effectiveOptions.tag || getCallerTag();
 
   let shouldLog = true;
   if (filters.length > 0) {
-    const tagMatch = filters.some(p => matchesScopeFilter(tag, p));
-    const levelMatch = filters.some(p => matchesScopeFilter(level, p));
+    const tagMatch = filters.some((p) => matchesScopeFilter(tag, p));
+    const levelMatch = filters.some((p) => matchesScopeFilter(level, p));
     shouldLog = tagMatch || levelMatch;
   }
 
@@ -112,7 +131,9 @@ function emitLog(level: LogLevel, args: unknown[], options?: LogOptions) {
 
   const ts = effectiveOptions.timestamp ? `[${new Date().toISOString()}] ` : "";
   const lvl = effectiveOptions.levelShort
-    ? (level === "log" ? "L" : level[0].toUpperCase())
+    ? level === "log"
+      ? "L"
+      : level[0].toUpperCase()
     : level.toUpperCase();
   const prefix = `${ts}[${lvl}][${tag}]`;
 
@@ -122,13 +143,31 @@ function emitLog(level: LogLevel, args: unknown[], options?: LogOptions) {
 
 /**
  * Create a logger instance with custom behavior scoped to a given tag or config.
+ * @param options - Log options to apply to all methods of the returned logger
+ * @returns An object with log methods bound to the provided options
+ * @public
  */
 function createLogWithOptions(options: LogOptions) {
   return {
+    /**
+     * Log a debug message with the provided options.
+     */
     debug: (...args: unknown[]) => emitLog("debug", args, options),
+    /**
+     * Log an info message with the provided options.
+     */
     info: (...args: unknown[]) => emitLog("info", args, options),
+    /**
+     * Log a warning message with the provided options.
+     */
     warn: (...args: unknown[]) => emitLog("warn", args, options),
+    /**
+     * Log an error message with the provided options.
+     */
     error: (...args: unknown[]) => emitLog("error", args, options),
+    /**
+     * Log a generic message with the provided options.
+     */
     log: (...args: unknown[]) => emitLog("log", args, options),
   };
 }
@@ -136,27 +175,54 @@ function createLogWithOptions(options: LogOptions) {
 /**
  * Default exported logger object.
  * Supports global usage and per-call configuration.
+ * @public
  */
 export const log = {
+  /**
+   * Log a debug message.
+   * @param args - Arguments to log
+   */
   debug: (...args: unknown[]) => emitLog("debug", args),
+  /**
+   * Log an info message.
+   * @param args - Arguments to log
+   */
   info: (...args: unknown[]) => emitLog("info", args),
+  /**
+   * Log a warning message.
+   * @param args - Arguments to log
+   */
   warn: (...args: unknown[]) => emitLog("warn", args),
+  /**
+   * Log an error message.
+   * @param args - Arguments to log
+   */
   error: (...args: unknown[]) => emitLog("error", args),
+  /**
+   * Log a generic message.
+   * @param args - Arguments to log
+   */
   log: (...args: unknown[]) => emitLog("log", args),
 
   /**
    * Create a scoped logger instance with temporary settings.
-   * @example log.options({ tag: "auth", timestamp: true }).info("msg")
+   * @example
+   * log.options({ tag: "auth", timestamp: true }).info("msg")
+   * @param options - Log options to apply to the returned logger
+   * @returns A logger instance with the specified options
    */
   options: createLogWithOptions,
 
   /**
-   * @deprecated use log.options({ tag }) instead
+   * @deprecated Use log.options({ tag }) instead.
+   * @param tag - Tag to scope the logger
+   * @returns A logger instance scoped to the provided tag
    */
   withTag: (tag: string) => createLogWithOptions({ tag }),
 
   /**
    * Update global default logging behavior.
+   * @param options - Partial overrides for global LogOptions
    */
   setup,
 };

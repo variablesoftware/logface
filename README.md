@@ -8,11 +8,13 @@
 
 ## ✨ Features
 
-- Drop-in replacements for `console.*` methods
-- Scoped tagging via `log.options({ tag })`
-- Filters logs with `LOG` or `LOG_VERBOSE` environment variables
-- Per-call configuration with timestamps and level formatting
+- Drop-in replacements for `console.*` methods: `debug`, `info`, `warn`, `error`, `log`
+- Scoped tagging via `log.options({ tag })` or deprecated `log.withTag(tag)`
+- Filters logs using `LOG` or `LOG_VERBOSE` environment variables (supports wildcards)
+- Per-call configuration: timestamps, level formatting, and custom tags
 - Wildcard filtering support (e.g. `auth:*`, `metrics*`)
+- Global setup via `log.setup({ ... })`
+- Designed for Node.js and edge runtimes
 
 ---
 
@@ -31,10 +33,19 @@ yarn add @variablesoftware/logface
 ```ts
 import { log } from "@variablesoftware/logface";
 
-log.debug("booting up");
-log.warn("careful now");
-log.options({ tag: "auth" }).info("user signed in");
-log.options({ tag: "metrics", timestamp: true }).info("CPU: %d%%", 92);
+// Basic usage
+log.debug("Boot sequence initiated");
+log.info("App started on port %d", 3000);
+log.warn("Disk usage at %d%%", 91);
+log.error("Database connection failed: %s", err.message);
+
+// Scoped/tagged logs
+log.options({ tag: "auth" }).debug("User login event");
+log.options({ tag: "metrics", timestamp: true }).info("Memory: %dMB", 182);
+log.options({ tag: "api", levelShort: false }).warn("Rate limit exceeded");
+
+// Global setup
+log.setup({ timestamp: true, levelShort: false });
 ```
 
 ---

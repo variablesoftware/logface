@@ -94,9 +94,18 @@ describe("logface", () => {
     log.warn("warn msg");
     log.error("error msg");
 
-    expect(debug).toHaveBeenCalledWith(expect.stringMatching(/\[D]\[[a-z0-9_.-]+]/i), "debug msg");
-    expect(warn).toHaveBeenCalledWith(expect.stringMatching(/\[W]\[[a-z0-9_.-]+]/i), "warn msg");
-    expect(error).toHaveBeenCalledWith(expect.stringMatching(/\[E]\[[a-z0-9_.-]+]/i), "error msg");
+    expect(debug).toHaveBeenCalledWith(
+      expect.stringMatching(/\[D]\[[a-z0-9_.-]+]/i),
+      "debug msg",
+    );
+    expect(warn).toHaveBeenCalledWith(
+      expect.stringMatching(/\[W]\[[a-z0-9_.-]+]/i),
+      "warn msg",
+    );
+    expect(error).toHaveBeenCalledWith(
+      expect.stringMatching(/\[E]\[[a-z0-9_.-]+]/i),
+      "error msg",
+    );
 
     debug.mockRestore();
     warn.mockRestore();
