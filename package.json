@@ -34,9 +34,9 @@
     "**/*.{ts,js,mjs,cts}": "eslint --fix"
   },
   "scripts": {
-    "build": "rollup -c && yarn minify; ls -lah dist",
+    "build": "yarn rollup -c && yarn minify; ls -lah dist",
     "prepare": "yarn husky install",
-    "watch:build": "rollup -c --watch",
+    "watch:build": "yarn rollup -c --watch",
     "build:release": "yarn build",
     "minify:options": "yarn terser --timings --compress --mangle --toplevel --source-map includeSources ",
     "minify": "yarn minify:options dist/*.js --output dist/index.min.js",
