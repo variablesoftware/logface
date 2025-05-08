@@ -229,3 +229,6 @@ export const log = {
    */
   setup,
 };
+
+export { Logger } from "./types/Logger";
+export type { Logger } from "./types/Logger";
