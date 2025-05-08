@@ -1,6 +1,6 @@
 {
   "name": "@variablesoftware/logface",
-  "version": "0.1.12",
+  "version": "0.1.14",
   "description": "🎛️🪵😎 A fun, lightweight, structured console-style logger with tag-based filtering for TypeScript projects.",
   "keywords": [
     "logger",
@@ -34,11 +34,12 @@
     "**/*.{ts,js,mjs,cts}": "eslint --fix"
   },
   "scripts": {
-    "build": "tsc && yarn minify; ls -lah dist",
+    "build": "rollup -c && yarn minify; ls -lah dist",
     "prepare": "yarn husky install",
-    "watch:build": "tsc --watch",
+    "watch:build": "rollup -c --watch",
     "build:release": "yarn build",
-    "minify": "yarn terser --timings --compress --mangle --toplevel --source-map includeSources dist/index.js --output dist/index.min.js",
+    "minify:options": "yarn terser --timings --compress --mangle --toplevel --source-map includeSources ",
+    "minify": "yarn minify:options dist/*.js --output dist/index.min.js",
     "prebuild": "yarn clean",
     "prepublishOnly": "yarn test:build",
     "clean": "rm -rf dist",
@@ -53,7 +54,7 @@
     "publish:npm": "yarn npm publish --access public",
     "test": "vitest run",
     "watch:test": "yarn vitest --watch",
-    "test:build": "yarn clean && yarn build && yarn test",
+    "build:test": "yarn clean && yarn build && yarn test",
     "corepack:go": "corepack enable && corepack prepare yarn@4.9.1 --activate",
     "upgrade:latest": "yarn set version stable && yarn upgrade-interactive",
     ":patch": "yarn version patch",
@@ -71,6 +72,9 @@
     "@eslint/js": "^9.26.0",
     "@microsoft/tsdoc": "^0.15.1",
     "@microsoft/tsdoc-config": "^0.17.1",
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
     "@types/node": "^22.15.14",
     "@typescript-eslint/eslint-plugin": "^8.32.0",
     "@typescript-eslint/parser": "^8.32.0",
@@ -79,7 +83,10 @@
     "eslint-plugin-tsdoc": "^0.4.0",
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
+    "rollup": "^4.40.2",
+    "rollup-plugin-typescript2": "^0.36.0",
     "terser": "^5.39.0",
+    "tslib": "^2.8.1",
     "typescript": "^5.8.3",
     "vitest": "^3.1.3"
   },
