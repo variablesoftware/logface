@@ -1,0 +1,45 @@
+// tests/unit/logface-multimatch.test.ts
+// Tests for LOG env with multiple patterns and special characters
+import { log } from "../../src";
+import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
+
+describe("LOG env multi-pattern and special character filtering", () => {
+  let infoSpy: ReturnType<typeof vi.spyOn>;
+  let originalLogEnv: string | undefined;
+
+  beforeEach(() => {
+    infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
+    originalLogEnv = process.env.LOG;
+  });
+
+  afterEach(() => {
+    infoSpy.mockRestore();
+    if (originalLogEnv === undefined) delete process.env.LOG;
+    else process.env.LOG = originalLogEnv;
+  });
+
+  it("should allow multiple comma-separated patterns", () => {
+    process.env.LOG = "auth,metrics";
+    log.options({ tag: "auth" }).info("auth log");
+    log.options({ tag: "metrics" }).info("metrics log");
+    expect(infoSpy).toHaveBeenCalledWith("[I][auth]", "auth log");
+    expect(infoSpy).toHaveBeenCalledWith("[I][metrics]", "metrics log");
+  });
+
+  it("should handle tags with special characters", () => {
+    process.env.LOG = "foo:bar-baz_123";
+    log.options({ tag: "foo:bar-baz_123" }).info("special tag");
+    expect(infoSpy).toHaveBeenCalledWith("[I][foo:bar-baz_123]", "special tag");
+  });
+
+  it("should match both level and tag if LOG contains both", () => {
+    process.env.LOG = "info,auth";
+    log.options({ tag: "auth" }).info("tag match");
+    log.options({ tag: "other" }).info("level match");
+    expect(infoSpy).toHaveBeenCalledWith("[I][auth]", "tag match");
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(/\[I]\[other]/i),
+      "level match"
+    );
+  });
+});
