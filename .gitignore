@@ -40,3 +40,5 @@ Thumbs.db
 # Binaries / archives
 *.tar.*
 *.zip
+*.tgz
+*.tbz2
