@@ -16,6 +16,13 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SCOPE: ${{secrets.scope}}
+          NODE_AUTH_TOKEN: ${{ secrets.VS_NPM_TOKEN}}
+          NPM_TOKEN: ${{ secrets.VS_NPM_TOKEN}}
+          #YARN_NPM_CONFIG_PROVENANCE:
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
