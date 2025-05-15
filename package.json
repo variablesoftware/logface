@@ -15,15 +15,17 @@
     "email": "bunkcode@variablesoftware.com",
     "url": "https://github.com/variablesoftware"
   },
-  "main": "dist/index.min.js",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "dist/types"
+    "dist/types",
+    "LICENSE.txt",
+    "README.md"
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.min.js",
+      "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
   },
