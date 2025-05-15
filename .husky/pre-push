@@ -1,5 +1,5 @@
 eval "$(nodenv init - zsh)"
-export PATH="$(nodenv root)/shims:$PATH"
+#export PATH="$(nodenv root)/shims:$PATH"
 #export NPM_TOKEN="$(security find-generic-password -a $USER -s SECRET_NPM_TOKEN -w 2>/dev/null)"
 set -x
 yarn lint && yarn build:test || exit 1
