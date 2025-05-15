@@ -1,6 +1,6 @@
 {
   "name": "@variablesoftware/logface",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "🎛️🪵😎 A fun, lightweight, structured console-style logger with tag-based filtering for TypeScript projects.",
   "keywords": [
     "logger",
@@ -18,10 +18,7 @@
   "main": "dist/index.min.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist/*.js",
-    "dist/*.d.ts",
-    "dist/*.js.map",
-    "dist/*.d.ts.map",
+    "dist",
     "dist/types"
   ],
   "exports": {
