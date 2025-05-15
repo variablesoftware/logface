@@ -1,6 +1,6 @@
 {
   "name": "@variablesoftware/logface",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "🎛️🪵😎 A fun, lightweight, structured console-style logger with tag-based filtering for TypeScript projects.",
   "keywords": [
     "logger",
@@ -18,10 +18,11 @@
   "main": "dist/index.min.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist/index.js",
-    "dist/index.d.ts",
-    "dist/index.min.js",
-    "dist/index.min.js.map"
+    "dist/*.js",
+    "dist/*.d.ts",
+    "dist/*.js.map",
+    "dist/*.d.ts.map",
+    "dist/types"
   ],
   "exports": {
     ".": {
@@ -34,7 +35,7 @@
     "**/*.{ts,js,mjs,cts}": "eslint --fix"
   },
   "scripts": {
-    "build": "yarn rollup -c && yarn minify; ls -lah dist",
+    "build": "yarn rollup -c && yarn minify; ls -lah dist dist/types",
     "prepare": "yarn husky install",
     "watch:build": "yarn rollup -c --watch",
     "build:release": "yarn build",

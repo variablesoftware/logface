@@ -1,3 +1,4 @@
+*.swp
 # .gitignore
 # This file is used to ignore files and directories that should not be tracked by Git.
 # It is a good practice to keep this file updated to avoid committing unnecessary files.
