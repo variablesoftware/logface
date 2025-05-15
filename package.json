@@ -6,9 +6,16 @@
     "logger",
     "console",
     "structured",
+    "structured-logging",
     "typescript",
     "debug",
-    "logface"
+    "logface",
+    "tags",
+    "loglevel",
+    "logging",
+    "log",
+    "lightweight",
+    "nodejs"
   ],
   "author": {
     "name": "Rob Friedman",
