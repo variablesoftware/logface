@@ -23,6 +23,6 @@ describe("npm smoke test: install and use latest @variablesoftware/logface", () 
       const output = execSync("node test.mjs", { cwd: tmpDir }).toString();
       expect(output).toMatch(/hello from npm smoke test/);
     },
-    90000 // 60 seconds timeout
+    120_000 // 60 seconds timeout
   );
 });
