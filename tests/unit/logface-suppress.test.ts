@@ -8,7 +8,7 @@
 //   - logface-runtimechange.test.ts
 // You may safely delete this file if all tests pass in the new structure.
 // Tests for LOG env suppressing logs not matching filter
-import { log } from "../../src";
+import logface from "../../src";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 
 describe("LOG env suppressing logs", () => {
@@ -28,13 +28,13 @@ describe("LOG env suppressing logs", () => {
 
   it("should suppress logs not matching LOG filter", () => {
     process.env.LOG = "auth";
-    log.options({ tag: "notauth" }).info("should not log");
+    logface.options({ tag: "notauth" }).info("should not log");
     expect(infoSpy).not.toHaveBeenCalled();
   });
 
   it("should not match unrelated scope", () => {
     process.env.LOG = "metrics";
-    log.options({ tag: "auth" }).info("should not match");
+    logface.options({ tag: "auth" }).info("should not match");
     expect(infoSpy).not.toHaveBeenCalled();
   });
 });

@@ -1,6 +1,6 @@
 // tests/unit/logface-routing.test.ts
 // Tests for correct routing to console methods and log level support
-import { log } from "../../src";
+import logface from "../../src";
 import { vi, describe, it, expect } from "vitest";
 
 describe("logface routing and log levels", () => {
@@ -9,9 +9,9 @@ describe("logface routing and log levels", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const error = vi.spyOn(console, "error").mockImplementation(() => {});
 
-    log.debug("debug msg");
-    log.warn("warn msg");
-    log.error("error msg");
+    logface("debug", "debug msg");
+    logface("warn", "warn msg");
+    logface("error", "error msg");
 
     expect(debug).toHaveBeenCalledWith(
       expect.stringMatching(/\[D]\[[a-z0-9_.-]+]/i),
@@ -34,7 +34,7 @@ describe("logface routing and log levels", () => {
   it("should route log.log() through console.log() with [L] tag", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     process.env.LOG = "*";
-    log.options({ tag: "console" }).log("log fallback");
+    logface.options({ tag: "console" }).log("log fallback");
     expect(logSpy).toHaveBeenCalledWith("[L][console]", "log fallback");
     logSpy.mockRestore();
   });

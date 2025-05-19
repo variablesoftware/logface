@@ -1,6 +1,6 @@
 // tests/unit/logface-levelonly.test.ts
 // Tests for LOG env with only log level filtering
-import { log } from "../../src";
+import logface from "../../src";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 
 describe("LOG env log level only filtering", () => {
@@ -21,8 +21,8 @@ describe("LOG env log level only filtering", () => {
   it("should only emit logs for the specified level", () => {
     process.env.LOG = "warn";
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-    log.info("should not log");
-    log.warn("should log");
+    logface("info", "should not log");
+    logface("warn", "should log");
     expect(infoSpy).not.toHaveBeenCalled();
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringMatching(/\[W]\[[a-z0-9_.-]+]/i),

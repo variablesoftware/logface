@@ -1,6 +1,6 @@
 // tests/unit/logface-wildcard.test.ts
 // Tests for LOG env wildcard filtering
-import { log } from "../../src";
+import logface from "../../src";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 
 describe("LOG env wildcard filtering", () => {
@@ -20,19 +20,19 @@ describe("LOG env wildcard filtering", () => {
 
   it("should match LOG filter with wildcard auth*", () => {
     process.env.LOG = "auth*";
-    log.options({ tag: "authLogin" }).info("matched wildcard");
+    logface.options({ tag: "authLogin" }).info("matched wildcard");
     expect(infoSpy).toHaveBeenCalledWith("[I][authLogin]", "matched wildcard");
   });
 
   it("should match LOG filter with wildcard auth:*", () => {
     process.env.LOG = "auth:*";
-    log.options({ tag: "auth:signup" }).info("matched scoped");
+    logface.options({ tag: "auth:signup" }).info("matched scoped");
     expect(infoSpy).toHaveBeenCalledWith("[I][auth:signup]", "matched scoped");
   });
 
   it("should emit all logs if LOG is '*'", () => {
     process.env.LOG = "*";
-    log.options({ tag: "foo" }).info("should log");
+    logface.options({ tag: "foo" }).info("should log");
     expect(infoSpy).toHaveBeenCalledWith("[I][foo]", "should log");
   });
 });

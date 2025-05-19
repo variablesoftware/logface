@@ -1,6 +1,6 @@
 // tests/unit/logface-nomatch.test.ts
 // Tests for LOG env with no match, empty, or invalid patterns
-import { log } from "../../src";
+import logface from "../../src";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 
 describe("LOG env no match, empty, or invalid patterns", () => {
@@ -20,19 +20,19 @@ describe("LOG env no match, empty, or invalid patterns", () => {
 
   it("should not emit logs if LOG matches nothing", () => {
     process.env.LOG = "nope";
-    log.options({ tag: "auth" }).info("should not log");
+    logface.options({ tag: "auth" }).info("should not log");
     expect(infoSpy).not.toHaveBeenCalled();
   });
 
   it("should emit all logs if LOG is empty", () => {
     delete process.env.LOG;
-    log.options({ tag: "bar" }).info("should log");
+    logface.options({ tag: "bar" }).info("should log");
     expect(infoSpy).toHaveBeenCalledWith("[I][bar]", "should log");
   });
 
   it("should not throw or log for invalid LOG pattern", () => {
     process.env.LOG = "!!!";
-    expect(() => log.options({ tag: "auth" }).info("should not log")).not.toThrow();
+    expect(() => logface.options({ tag: "auth" }).info("should not log")).not.toThrow();
     expect(infoSpy).not.toHaveBeenCalled();
   });
 });

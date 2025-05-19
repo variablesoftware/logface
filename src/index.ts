@@ -30,6 +30,21 @@
  * @license MIT
  */
 
+// Optional chalk require for color support (no dynamic import)
+let chalk: any = null;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  chalk = require('chalk');
+} catch (e) {
+  chalk = {
+    gray: (s: string) => s,
+    cyan: (s: string) => s,
+    yellow: (s: string) => s,
+    red: (s: string) => s,
+    white: (s: string) => s,
+  };
+}
+
 /**
  * Valid logging levels that map to native `console` methods.
  * @public
@@ -104,6 +119,17 @@ function matchesScopeFilter(scope: string, pattern: string): boolean {
   return scope === pattern;
 }
 
+function colorForLevel(level: LogLevel): (msg: string) => string {
+  switch (level) {
+    case 'debug': return chalk.gray;
+    case 'info': return chalk.cyan;
+    case 'warn': return chalk.yellow;
+    case 'error': return chalk.red;
+    case 'log': return chalk.white;
+    default: return chalk.white;
+  }
+}
+
 /**
  * Emit a formatted log message at the specified level.
  * Handles filtering, prefix formatting, and routing to the appropriate console method.
@@ -113,20 +139,21 @@ function matchesScopeFilter(scope: string, pattern: string): boolean {
  * @internal
  */
 function emitLog(level: LogLevel, args: unknown[], options?: LogOptions): void {
-  const env = typeof process !== "undefined" ? process.env : {};
+  // Use typeof check for process to support edge runtimes
+  const env = typeof process !== "undefined" && process.env ? process.env : {};
   const filter = env.LOG || env.LOG_VERBOSE || "";
   const filters = filter
     .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
+    .map((s: string) => s.trim())
+    .filter((s: string) => Boolean(s));
 
   const effectiveOptions = { ...globalLogOptions, ...options };
   const tag = effectiveOptions.tag || getCallerTag();
 
   let shouldLog = true;
   if (filters.length > 0) {
-    const tagMatch = filters.some((p) => matchesScopeFilter(tag, p));
-    const levelMatch = filters.some((p) => matchesScopeFilter(level, p));
+    const tagMatch = filters.some((p: string) => matchesScopeFilter(tag, p));
+    const levelMatch = filters.some((p: string) => matchesScopeFilter(level, p));
     shouldLog = tagMatch || levelMatch;
   }
 
@@ -139,9 +166,9 @@ function emitLog(level: LogLevel, args: unknown[], options?: LogOptions): void {
       : level[0].toUpperCase()
     : level.toUpperCase();
   const prefix = `${ts}[${lvl}][${tag}]`;
-
+  const color = colorForLevel(level);
   const target = level === "log" ? console.log : console[level];
-  target(prefix, ...args);
+  target(color(prefix), ...args);
 }
 
 /**
@@ -229,5 +256,21 @@ export const log = {
    */
   setup,
 };
+
+// Hybrid callable+object export
+function logface(level: LogLevel, ...args: unknown[]) {
+  emitLog(level, args);
+}
+
+['debug', 'info', 'warn', 'error', 'log'].forEach((level) => {
+  (logface as any)[level] = (...args: unknown[]) => emitLog(level as LogLevel, args);
+});
+
+logface.options = createLogWithOptions;
+logface.withTag = (tag: string) => createLogWithOptions({ tag });
+logface.setup = setup;
+
+export default logface;
+export { logface };
 
 export type { Logger } from "./types/Logger";
