@@ -8,10 +8,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "typeRoots": ["./src/types", "./node_modules/@types"],
+    "types": ["node"],
     "declaration": true,
-    "declarationDir": "./dist",
-    "types": ["node"]
+    "declarationDir": "./dist"
   },
   "include": ["src"]
 }

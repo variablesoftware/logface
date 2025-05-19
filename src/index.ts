@@ -262,6 +262,7 @@ function logface(level: LogLevel, ...args: unknown[]) {
   emitLog(level, args);
 }
 
+// Add console.*-compatible property methods to the default export
 ['debug', 'info', 'warn', 'error', 'log'].forEach((level) => {
   (logface as any)[level] = (...args: unknown[]) => emitLog(level as LogLevel, args);
 });

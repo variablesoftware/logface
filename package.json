@@ -1,6 +1,6 @@
 {
   "name": "@variablesoftware/logface",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "description": "🎛️🪵😎 A fun, lightweight, structured console-style logger with tag-based filtering for TypeScript projects.",
   "keywords": [
     "logger",
@@ -70,7 +70,7 @@
     "release": "yarn semantic-release",
     "release:dry": "yarn semantic-release --dry-run",
     "release2": "yarn clean && yarn build:release && git push && git push --tags && yarn npm publish --access public",
-    "release2:dry": "yarn clean && yarn build:release && npm pack --dry-run"
+    "release2:dry": "yarn clean && yarn build:release && npm pack --dry-run && yarn pack --dry-run"
   },
   "repository": {
     "type": "git",
