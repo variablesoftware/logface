@@ -1,7 +1,20 @@
 // tests/unit/logface-routing.test.ts
 // Tests for correct routing to console methods and log level support
 import logface from "../../src";
-import { vi, describe, it, expect } from "vitest";
+import { vi, describe, it, expect, beforeAll, afterAll } from "vitest";
+
+beforeAll(() => {
+  process.env._DEBUG_OLD = process.env.DEBUG;
+  process.env.DEBUG = '1';
+});
+afterAll(() => {
+  if (process.env._DEBUG_OLD !== undefined) {
+    process.env.DEBUG = process.env._DEBUG_OLD;
+    delete process.env._DEBUG_OLD;
+  } else {
+    delete process.env.DEBUG;
+  }
+});
 
 describe("logface routing and log levels", () => {
   it("should support all base log levels", () => {

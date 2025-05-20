@@ -1,6 +1,6 @@
 {
   "name": "@variablesoftware/logface",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "🎛️🪵😎 A fun, lightweight, structured console-style logger with tag-based filtering for TypeScript projects.",
   "keywords": [
     "logger",
@@ -87,7 +87,7 @@
     "@semantic-release/github": "^11.0.2",
     "@semantic-release/npm": "^12.0.1",
     "@semantic-release/release-notes-generator": "^14.0.3",
-    "@types/node": "^22.15.18",
+    "@types/node": "^22.15.19",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
     "eslint": "^9.27.0",

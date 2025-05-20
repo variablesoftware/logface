@@ -37,3 +37,29 @@ export type Logger = {
    */
   log: (..._args: unknown[]) => void;
 };
+
+/**
+ * Valid logging levels that map to native `console` methods.
+ * @public
+ */
+export type LogLevel = "debug" | "info" | "warn" | "error" | "log";
+
+/**
+ * Valid runtime log levels for log.level, setLogLevel, getLogLevel.
+ * 'silent' disables all output. Not valid for log methods themselves.
+ * @public
+ */
+export type RuntimeLogLevel = LogLevel | "silent";
+
+/**
+ * Optional configuration for each log invocation or global setup.
+ * @public
+ */
+export interface LogOptions {
+  /** Tag to display in `[TAG]` scope brackets */
+  tag?: string;
+  /** Include ISO 8601 UTC timestamp prefix */
+  timestamp?: boolean;
+  /** Use short form `[D]`, `[I]`, etc. for levels */
+  levelShort?: boolean;
+}

@@ -9,12 +9,17 @@
 ## ✨ Features
 
 - Drop-in replacements for `console.*` methods: `debug`, `info`, `warn`, `error`, `log`
-- Scoped tagging via `log.options({ tag })` or deprecated `log.withTag(tag)`
+- Scoped tagging via `log.options({ tag })` (preferred) or `log.withTag(tag)` (**deprecated**)
 - Filters logs using `LOG` or `LOG_VERBOSE` environment variables (supports wildcards)
+- Runtime log level: `log.level = 'warn'` or `log.setLogLevel('warn')` to suppress lower levels (unless LOG/LOG_VERBOSE is set)
 - Per-call configuration: timestamps, level formatting, and custom tags
 - Wildcard filtering support (e.g. `auth:*`, `metrics*`)
 - Global setup via `log.setup({ ... })`
 - Designed for Node.js and edge runtimes
+- **Debug output is always gated:** debug logs only appear if `LOG`/`LOG_VERBOSE` match, or if `log.level` is `'debug'` **and** `DEBUG=1` is set
+- `log.level = 'silent'` or `log.setLogLevel('silent')` suppresses all output
+- All log filtering logic falls back to `LOG`/`LOG_VERBOSE` if set, otherwise uses the runtime log level
+- `log.withTag` is deprecated; use `log.options({ tag })` instead
 
 ---
 
@@ -46,6 +51,17 @@ log.options({ tag: "api", levelShort: false }).warn("Rate limit exceeded");
 
 // Global setup
 log.setup({ timestamp: true, levelShort: false });
+
+// Runtime log level (NEW)
+log.level = 'warn'; // Only warn, error, and log will be emitted
+log.setLogLevel('error'); // Only error and log will be emitted
+log.level = 'silent'; // Suppress all output
+
+// Restore to default
+log.level = 'debug';
+
+// Deprecated: use log.options({ tag }) instead
+log.withTag("auth").info("This is deprecated");
 ```
 
 ---
@@ -70,6 +86,15 @@ Use `LOG` or `LOG_VERBOSE` to filter logs by tag or level:
 LOG=auth node app.js
 LOG=metrics,debug,auth* node app.js
 ```
+
+If neither is set, you can control output at runtime:
+
+```js
+log.level = 'warn'; // Only warn, error, and log
+log.level = 'silent'; // Suppress all output
+```
+
+Debug logs are only shown if `LOG`/`LOG_VERBOSE` match, or if `log.level` is 'debug' **and** `DEBUG=1` is set in the environment.
 
 ---
 

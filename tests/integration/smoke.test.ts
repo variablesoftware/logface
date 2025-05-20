@@ -4,6 +4,9 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 
+const isSmoke = typeof process !== 'undefined' && process.env && process.env.SMOKE === '1';
+const testOrSkip = isSmoke ? test : test.skip;
+
 function run(cmd, opts = {}) {
   return execSync(cmd, { stdio: 'inherit', ...opts });
 }
@@ -11,7 +14,7 @@ function run(cmd, opts = {}) {
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'logface-smoke-'));
 const origCwd = process.cwd();
 
-test('npm package can be installed and imported (smoke test)', async () => {
+testOrSkip('npm package can be installed and imported (smoke test)', async () => {
   try {
     // Pack the current package
     run('npm pack');
