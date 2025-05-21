@@ -4,7 +4,7 @@
  * @returns An object with log methods bound to the provided options
  * @public
  */
-import { emitLog } from './emitLog';
+import { emitLog } from './emitLog.js';
 import type { LogOptions } from '../types/Logger';
 
 export function createLogWithOptions(options: LogOptions) {

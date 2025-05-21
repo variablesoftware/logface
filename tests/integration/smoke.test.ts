@@ -1,3 +1,6 @@
+// 🔥💨🧪 Smoke test: install latest published logface from npm and run a basic usage
+// This test is slow and requires network access. Mark as skipped by default.
+
 import { test } from 'vitest';
 import { execSync } from 'child_process';
 import fs from 'fs';

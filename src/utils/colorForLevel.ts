@@ -16,7 +16,7 @@ try {
     white: (s: string) => s,
   };
 }
-import type { LogLevel } from '../types/Logger';
+import type { LogLevel } from '../types/Logger.js';
 export function colorForLevel(level: LogLevel): (msg: string) => string {
   switch (level) {
     case 'debug': return chalk.gray;

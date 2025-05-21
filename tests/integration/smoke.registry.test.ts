@@ -1,3 +1,6 @@
+// 🔥💨🧪 Smoke test: install latest published logface from npm and run a basic usage
+// This test is slow and requires network access. Mark as skipped by default.
+
 import { test } from 'vitest';
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -8,7 +11,10 @@ function run(cmd, opts = {}) {
   return execSync(cmd, { stdio: 'inherit', ...opts });
 }
 
-test('npm package can be installed and imported from registry (smoke test)', async () => {
+const isSmoke = typeof process !== 'undefined' && process.env && process.env.SMOKE === '1';
+const testOrSkip = isSmoke ? test : test.skip;
+
+testOrSkip('npm package can be installed and imported from registry (smoke test)', async () => {
   // Use a temp directory for the test
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'logface-smoke-registry-'));
   const origCwd = process.cwd();

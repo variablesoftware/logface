@@ -7,11 +7,11 @@
  * @internal
  */
 import type { LogLevel, LogOptions } from '../types/Logger';
-import { getCallerTag } from '../utils/getCallerTag';
-import { matchesScopeFilter } from '../utils/matchesScopeFilter';
-import { colorForLevel } from '../utils/colorForLevel';
-import { formatWithReplacements } from '../utils/formatWithReplacements';
-import { globalLogOptions } from '../core/globalLogOptions';
+import { getCallerTag } from '../utils/getCallerTag.js';
+import { matchesScopeFilter } from '../utils/matchesScopeFilter.js';
+import { colorForLevel } from '../utils/colorForLevel.js';
+import { formatWithReplacements } from '../utils/formatWithReplacements.js';
+import { globalLogOptions } from '../core/globalLogOptions.js';
 
 /**
  * Runtime log level. Only logs at or above this level will be emitted (unless LOG/LOG_VERBOSE is set).

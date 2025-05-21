@@ -30,11 +30,11 @@
  * @license MIT
  */
 
-import type { LogLevel, LogOptions } from "./types/Logger";
-import { emitLog } from "./core/emitLog";
-import { createLogWithOptions } from "./core/createLogWithOptions";
-import { globalLogOptions } from "./core/globalLogOptions";
-import { setLogLevel, getLogLevel } from "./core/emitLog";
+import type { LogLevel, LogOptions } from "./types/Logger.js";
+import { emitLog } from "./core/emitLog.js";
+import { createLogWithOptions } from "./core/createLogWithOptions.js";
+import { globalLogOptions } from "./core/globalLogOptions.js";
+import { setLogLevel, getLogLevel } from "./core/emitLog.js";
 
 /**
  * Update global logging defaults at runtime.
@@ -107,4 +107,4 @@ logface.getLogLevel = getLogLevel;
 export default logface;
 export { logface };
 
-export type { Logger } from "./types/Logger";
+export type { Logger } from "./types/Logger.js";
