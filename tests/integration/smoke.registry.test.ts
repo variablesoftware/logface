@@ -11,7 +11,7 @@ function run(cmd, opts = {}) {
   return execSync(cmd, { stdio: 'inherit', ...opts });
 }
 
-const isSmoke = typeof process !== 'undefined' && process.env && process.env.SMOKE === '1';
+const isSmoke = typeof process !== 'undefined' && process.env && process.env.SMOKE_REGISTRY === '1';
 const testOrSkip = isSmoke ? test : test.skip;
 
 testOrSkip('npm package can be installed and imported from registry (smoke test)', async () => {

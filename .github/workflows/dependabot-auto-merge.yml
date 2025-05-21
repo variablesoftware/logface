@@ -36,7 +36,7 @@ jobs:
       - run: yarn build
       - run: yarn vitest
 
-  # doesn't actually work, yet.
+  # sometimes it actually works, kinda.
   test-bump-and-publish-test:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: build-test
@@ -75,3 +75,4 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.VS_NPM_TOKEN}}
           NPM_TOKEN: ${{ secrets.VS_NPM_TOKEN}}
           #YARN_NPM_CONFIG_PROVENANCE:
+          SMOKE: 1
