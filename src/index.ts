@@ -51,16 +51,16 @@ export function setup(options: Partial<LogOptions>): void {
  * @public
  */
 export const log = {
-  debug: (...args: unknown[]) => emitLog("debug", args),
-  info: (...args: unknown[]) => emitLog("info", args),
-  warn: (...args: unknown[]) => emitLog("warn", args),
-  error: (...args: unknown[]) => emitLog("error", args),
-  log: (...args: unknown[]) => emitLog("log", args),
+  debug: (..._args: unknown[]) => emitLog("debug", _args),
+  info: (..._args: unknown[]) => emitLog("info", _args),
+  warn: (..._args: unknown[]) => emitLog("warn", _args),
+  error: (..._args: unknown[]) => emitLog("error", _args),
+  log: (..._args: unknown[]) => emitLog("log", _args),
   options: createLogWithOptions,
   /**
    * @deprecated Use log.options({ tag }) instead.
    */
-  withTag: (tag: string) => createLogWithOptions({ tag }),
+  withTag: (_tag: string) => createLogWithOptions({ tag: _tag }),
   setup,
   /**
    * Runtime log level. Only logs at or above this level will be emitted (unless LOG/LOG_VERBOSE is set).
@@ -73,29 +73,29 @@ export const log = {
 };
 
 interface LogfaceHybrid {
-  (level: LogLevel, ...args: unknown[]): void;
-  debug: (...args: unknown[]) => void;
-  info: (...args: unknown[]) => void;
-  warn: (...args: unknown[]) => void;
-  error: (...args: unknown[]) => void;
-  log: (...args: unknown[]) => void;
+  (_level: LogLevel, ..._args: unknown[]): void;
+  debug: (..._args: unknown[]) => void;
+  info: (..._args: unknown[]) => void;
+  warn: (..._args: unknown[]) => void;
+  error: (..._args: unknown[]) => void;
+  log: (..._args: unknown[]) => void;
   options: typeof createLogWithOptions;
-  withTag: (tag: string) => ReturnType<typeof createLogWithOptions>;
+  withTag: (_tag: string) => ReturnType<typeof createLogWithOptions>;
   setup: typeof setup;
   level: LogLevel | 'silent';
   setLogLevel: typeof setLogLevel;
   getLogLevel: typeof getLogLevel;
 }
 
-const logface: LogfaceHybrid = function(level: LogLevel, ...args: unknown[]) {
-  emitLog(level, args);
+const logface: LogfaceHybrid = function(_level: LogLevel, ..._args: unknown[]) {
+  emitLog(_level, _args);
 } as LogfaceHybrid;
 
-['debug', 'info', 'warn', 'error', 'log'].forEach((level) => {
-  (logface as any)[level] = (...args: unknown[]) => emitLog(level as LogLevel, args);
+['debug', 'info', 'warn', 'error', 'log'].forEach((_level) => {
+  (logface as Record<string, unknown>)[_level] = (..._args: unknown[]) => emitLog(_level as LogLevel, _args);
 });
 logface.options = createLogWithOptions;
-logface.withTag = (tag: string) => createLogWithOptions({ tag });
+logface.withTag = (_tag: string) => createLogWithOptions({ tag: _tag });
 logface.setup = setup;
 Object.defineProperty(logface, 'level', {
   get: getLogLevel,

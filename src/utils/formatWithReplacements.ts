@@ -13,8 +13,8 @@ export function formatWithReplacements(fmt: string, args: unknown[]): unknown[] 
     switch (match) {
       case '%s': return String(val);
       case '%d':
-      case '%i': return String(parseInt(val as any, 10));
-      case '%f': return String(parseFloat(val as any));
+      case '%i': return String(parseInt(val as string, 10));
+      case '%f': return String(parseFloat(val as string));
       case '%o':
       case '%O': return typeof val === 'object' ? JSON.stringify(val) : String(val);
       default: return match;
