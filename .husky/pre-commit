@@ -1,8 +1,8 @@
 #eval "$(nodenv init - zsh)"
 source ~/.nvm/nvm.sh
+nvm use 22 --lts
 set -x
 
-nvm use 22 --lts
 corepack enable && corepack prepare yarn@4.9.1 --activate
 echo $PATH
 which yarn node git
