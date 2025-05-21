@@ -1,3 +1,10 @@
+## [0.2.9](https://github.com/variablesoftware/logface/compare/v0.2.8...v0.2.9) (2025-05-21)
+
+
+### Bug Fixes
+
+* update type assertion for logface methods and add SMOKE environment variable in workflow ([1021d8d](https://github.com/variablesoftware/logface/commit/1021d8d6026212ef8979ce1b3a76e36671dd0018))
+
 # [0.2.0](https://github.com/variablesoftware/logface/compare/v0.1.3...v0.2.0) (2025-05-09)
 
 
