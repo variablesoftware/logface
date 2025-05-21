@@ -92,7 +92,7 @@ const logface: LogfaceHybrid = function(_level: LogLevel, ..._args: unknown[]) {
 } as LogfaceHybrid;
 
 ['debug', 'info', 'warn', 'error', 'log'].forEach((_level) => {
-  (logface as Record<string, unknown>)[_level] = (..._args: unknown[]) => emitLog(_level as LogLevel, _args);
+  (logface as unknown as Record<string, unknown>)[_level] = (..._args: unknown[]) => emitLog(_level as LogLevel, _args);
 });
 logface.options = createLogWithOptions;
 logface.withTag = (_tag: string) => createLogWithOptions({ tag: _tag });

@@ -22,6 +22,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.VS_NPM_TOKEN}}
           NPM_TOKEN: ${{ secrets.VS_NPM_TOKEN}}
           #YARN_NPM_CONFIG_PROVENANCE:
+          SMOKE: 1
 
     steps:
       - uses: actions/checkout@v4
