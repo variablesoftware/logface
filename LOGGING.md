@@ -1,10 +1,62 @@
-# Logface Logging Guide 🪵😎
+# Logface Logging & Configuration Guide
 
-This document provides advanced guidance for using `@variablesoftware/logface` in your projects, including runtime log level control, debug gating, filtering, and best practices for maintainable, testable logging.
+Logface is highly configurable. You can control log output style, emoji, color, and more.
+
+## Configuration File
+
+- Place a `logface.config.js` (CommonJS/ESM) or `logface.config.mjs` (ESM) in your project root.
+- See `logface.example.config.js` for a template.
+
+### Example: Fun & Colorful Logging
+
+```js
+// logface.config.js
+module.exports = {
+  emojiRandom: true,
+  emojis: {
+    debug: ["🐛", "🔍", "🦠"],
+    info: ["ℹ️", "💡", "🧭"],
+    log: ["📝", "📄", "🗒️"],
+    warn: ["⚠️", "🚧", "🛑"],
+    error: ["🔥", "💥", "💣"],
+  },
+  colorEnabled: true,
+  colorLibrary: "kleur",
+};
+```
+
+### Example: Minimal Output (for CI/tests)
+
+```js
+// logface.config.js
+module.exports = {
+  emojiRandom: false,
+  emojis: { debug: "", info: "", log: "", warn: "", error: "" },
+  colorEnabled: false,
+};
+```
+
+## .js vs .mjs
+
+- `.js` can be CommonJS or ESM (depends on `package.json` `type` field).
+- `.mjs` is always ESM.
+
+## How Emoji & Color Work
+
+- Emoji are added as a prefix by logface (not stripped from your message).
+- Disabling emoji/color only affects the prefix, not your message content.
+- Randomization (`emojiRandom: true`) picks a random emoji from the array for each log message.
+
+## Best Practices
+
+- Ignore `logface.config.js` in git (add to `.gitignore`).
+- Use the example config as a starting point.
+- For stable test output, disable emoji and color in your test config or via environment variables.
 
 ---
 
 ### Table of Contents
+
 - [Log Levels](#log-levels)
 - [Runtime Log Level](#runtime-log-level)
 - [Debug Gating](#debug-gating)
@@ -15,12 +67,14 @@ This document provides advanced guidance for using `@variablesoftware/logface` i
 - [Deprecated: log.withTag](#deprecated-logwithtag)
 - [Testing Log Output](#testing-log-output)
 - [Best Practices](#best-practices)
+- [Example: Silent Logging in Production/Edge/Serverless](#example-silent-logging-in-productionedgeserverless)
 
 ---
 
 ## Log Levels
 
 Logface supports the following log levels:
+
 - `debug`
 - `info`
 - `warn`
@@ -34,10 +88,10 @@ Logface supports the following log levels:
 You can control which log levels are emitted at runtime:
 
 ```ts
-log.level = 'warn'; // Only warn, error, and log will be emitted
-log.setLogLevel('error'); // Only error and log will be emitted
-log.level = 'silent'; // Suppress all output
-log.level = 'debug'; // Restore to default (all logs, if allowed by filters)
+log.level = "warn"; // Only warn, error, and log will be emitted
+log.setLogLevel("error"); // Only error and log will be emitted
+log.level = "silent"; // Suppress all output
+log.level = "debug"; // Restore to default (all logs, if allowed by filters)
 ```
 
 - The runtime log level is respected unless `LOG` or `LOG_VERBOSE` is set in the environment.
@@ -49,6 +103,7 @@ log.level = 'debug'; // Restore to default (all logs, if allowed by filters)
 ## Debug Gating
 
 **Debug output is always gated:**
+
 - Debug logs are only emitted if `LOG`/`LOG_VERBOSE` matches the tag/level, **or** if `log.level` is `'debug'` **and** `DEBUG=1` is set in the environment.
 - This ensures debug output is never shown unless explicitly enabled.
 
@@ -90,8 +145,8 @@ LOG_VERBOSE=api* node app.js
 - Use `log.options({ tag })` to scope logs:
 
 ```ts
-log.options({ tag: 'auth' }).info('User login');
-log.options({ tag: 'metrics', timestamp: true }).debug('Memory usage');
+log.options({ tag: "auth" }).info("User login");
+log.options({ tag: "metrics", timestamp: true }).debug("Memory usage");
 ```
 
 - You can also set global options with `log.setup({ ... })`.
@@ -114,8 +169,8 @@ log.options({ tag: 'metrics', timestamp: true }).debug('Memory usage');
 - Use the runtime log level to control output in tests:
 
 ```ts
-log.level = 'warn';
-log.level = 'silent';
+log.level = "warn";
+log.level = "silent";
 ```
 
 ---
@@ -128,6 +183,33 @@ log.level = 'silent';
 - Use runtime log level and environment variables to control output in different environments.
 - Document your log tags and levels for maintainability.
 - Use `log.level = 'silent'` in tests unless you are explicitly testing log output.
+
+---
+
+## Example: Silent Logging in Production/Edge/Serverless
+
+In production or serverless environments (like Cloudflare Workers), you may want to suppress all log output by default to avoid unnecessary costs or noise.
+
+```js
+// At the top of your worker or server entrypoint
+import logface from 'logface';
+
+if (process.env.NODE_ENV === 'production' || process.env.CF_PAGES) {
+  logface.setLogLevel('silent');
+}
+```
+
+Or, in your config file:
+
+```js
+// logface.config.js
+module.exports = {
+  // ...other config...
+  level: process.env.NODE_ENV === 'production' ? 'silent' : 'debug'
+};
+```
+
+> **Tip:** Cloudflare Workers and some edge platforms may require a paid plan to view logs. Suppressing logs by default is a best practice for production deployments.
 
 ---
 

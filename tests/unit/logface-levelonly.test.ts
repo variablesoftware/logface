@@ -26,7 +26,7 @@ describe("LOG env log level only filtering", () => {
     expect(infoSpy).not.toHaveBeenCalled();
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringMatching(/\[W]\[[a-z0-9_.-]+]/i),
-      "should log"
+      "should log",
     );
     warnSpy.mockRestore();
   });

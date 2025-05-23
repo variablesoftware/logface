@@ -53,12 +53,12 @@ log.options({ tag: "api", levelShort: false }).warn("Rate limit exceeded");
 log.setup({ timestamp: true, levelShort: false });
 
 // Runtime log level (NEW)
-log.level = 'warn'; // Only warn, error, and log will be emitted
-log.setLogLevel('error'); // Only error and log will be emitted
-log.level = 'silent'; // Suppress all output
+log.level = "warn"; // Only warn, error, and log will be emitted
+log.setLogLevel("error"); // Only error and log will be emitted
+log.level = "silent"; // Suppress all output
 
 // Restore to default
-log.level = 'debug';
+log.level = "debug";
 
 // Deprecated: use log.options({ tag }) instead
 log.withTag("auth").info("This is deprecated");
@@ -90,8 +90,8 @@ LOG=metrics,debug,auth* node app.js
 If neither is set, you can control output at runtime:
 
 ```js
-log.level = 'warn'; // Only warn, error, and log
-log.level = 'silent'; // Suppress all output
+log.level = "warn"; // Only warn, error, and log
+log.level = "silent"; // Suppress all output
 ```
 
 Debug logs are only shown if `LOG`/`LOG_VERBOSE` match, or if `log.level` is 'debug' **and** `DEBUG=1` is set in the environment.
@@ -126,3 +126,84 @@ MIT © Rob Friedman / Variable Software
 - Works well in diverse, multilingual, and inclusive developer environments
 
 ---
+
+# Logface Configuration
+
+Logface supports powerful customization via a config file. You can control emoji, color, and more for your log output.
+
+## Quick Start
+
+1. Copy the example config:
+   ```sh
+   cp logface.example.config.js logface.config.js
+   ```
+2. Edit `logface.config.js` to your liking.
+
+## Example: Multiple Emoji Sets & Randomization
+
+```js
+// logface.config.js
+module.exports = {
+  emojiRandom: true, // Random emoji per log message
+  emojis: {
+    debug: ["🐛", "🔍", "🦠"],
+    info: ["ℹ️", "💡", "🧭"],
+    log: ["📝", "📄", "🗒️"],
+    warn: ["⚠️", "🚧", "🛑"],
+    error: ["🔥", "💥", "💣"],
+  },
+  colorEnabled: true, // Enable/disable color
+  colorLibrary: "chalk", // 'chalk', 'picocolors', 'colorette', or 'kleur'
+};
+```
+
+## Disabling Emoji/Color in Tests
+
+Logface disables emoji and color automatically during tests for stable output. You can also set these manually:
+
+```js
+module.exports = {
+  emojiRandom: false,
+  emojis: { debug: "", info: "", log: "", warn: "", error: "" },
+  colorEnabled: false,
+};
+```
+
+## Supported Config Options
+
+- `emojiRandom`: `true` for random emoji per log, `false` for fixed.
+- `emojis`: Object mapping log levels to emoji (array or string).
+- `colorEnabled`: Enable/disable color output.
+- `colorLibrary`: Choose color library: `'chalk'`, `'picocolors'`, `'colorette'`, `'kleur'`.
+
+## .js vs .mjs
+
+- Use `.js` for CommonJS or ESM (depends on your `package.json` `type`).
+- Use `.mjs` for guaranteed ESM.
+
+## Example: ESM Config
+
+```js
+// logface.config.mjs
+export default {
+  emojiRandom: true,
+  emojis: {
+    debug: ["🐛", "🔍", "🦠"],
+    info: ["ℹ️", "💡", "🧭"],
+    log: ["📝", "📄", "🗒️"],
+    warn: ["⚠️", "🚧", "🛑"],
+    error: ["🔥", "💥", "💣"],
+  },
+  colorEnabled: true,
+  colorLibrary: "picocolors",
+};
+```
+
+## Tips
+
+- Add `logface.config.js` to your `.gitignore` to avoid committing user-specific config.
+- See `logface.example.config.js` for a template.
+
+---
+
+For more, see [LOGGING.md](./LOGGING.md).

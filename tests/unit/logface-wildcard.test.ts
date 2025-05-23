@@ -1,13 +1,20 @@
-// tests/unit/logface-wildcard.test.ts
-// Tests for LOG env wildcard filtering
+process.env.LOGFACE_NO_EMOJI = '1';
 import logface from "../../src";
-import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
 
 describe("LOG env wildcard filtering", () => {
   let infoSpy: ReturnType<typeof vi.spyOn>;
   let originalLogEnv: string | undefined;
 
-  beforeEach(() => {
+  beforeAll(() => {
+    process.env.LOGFACE_NO_EMOJI = '1';
+  });
+
+  beforeEach(async () => {
+    process.env.LOGFACE_NO_EMOJI = '1';
+    if (typeof logface.reloadUserConfig === 'function') {
+      await logface.reloadUserConfig();
+    }
     infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
     originalLogEnv = process.env.LOG;
   });

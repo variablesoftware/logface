@@ -22,11 +22,22 @@
 // You may safely delete this file if all tests pass in the new structure.
 
 import { log } from "../src";
-import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
+import {
+  vi,
+  describe,
+  it,
+  expect,
+  beforeEach,
+  afterEach,
+  beforeAll,
+  afterAll,
+} from "vitest";
+
+process.env.LOGFACE_NO_EMOJI = '1';
 
 beforeAll(() => {
   process.env._DEBUG_OLD = process.env.DEBUG;
-  process.env.DEBUG = '1';
+  process.env.DEBUG = "1";
 });
 afterAll(() => {
   if (process.env._DEBUG_OLD !== undefined) {
@@ -149,7 +160,7 @@ describe("LOG env edge cases", () => {
     expect(infoSpy).not.toHaveBeenCalled();
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringMatching(/\[W]\[[a-z0-9_.-]+]/i),
-      "should log"
+      "should log",
     );
     warnSpy.mockRestore();
   });
@@ -174,7 +185,9 @@ describe("LOG env edge cases", () => {
 
   it("should not throw or log for invalid LOG pattern", () => {
     process.env.LOG = "!!!";
-    expect(() => log.options({ tag: "auth" }).info("should not log")).not.toThrow();
+    expect(() =>
+      log.options({ tag: "auth" }).info("should not log"),
+    ).not.toThrow();
     expect(infoSpy).not.toHaveBeenCalled();
   });
 
@@ -201,7 +214,7 @@ describe("LOG env edge cases", () => {
     expect(infoSpy).toHaveBeenCalledWith("[I][auth]", "tag match");
     expect(infoSpy).toHaveBeenCalledWith(
       expect.stringMatching(/\[I]\[other]/i),
-      "level match"
+      "level match",
     );
   });
 
@@ -209,8 +222,12 @@ describe("LOG env edge cases", () => {
     process.env.LOG = "*";
     infoSpy.mockRestore();
     const infoSpy2 = vi.spyOn(console, "info").mockImplementation(() => {});
-    log.options({ tag: "ts", timestamp: true, levelShort: false }).info("combo");
-    expect(infoSpy2.mock.calls[0][0]).toMatch(/^\[\d{4}-\d{2}-\d{2}T.*Z] \[INFO]\[ts]/);
+    log
+      .options({ tag: "ts", timestamp: true, levelShort: false })
+      .info("combo");
+    expect(infoSpy2.mock.calls[0][0]).toMatch(
+      /^\[\d{4}-\d{2}-\d{2}T.*Z] \[INFO]\[ts]/,
+    );
     expect(infoSpy2.mock.calls[0][1]).toBe("combo");
     infoSpy2.mockRestore();
   });

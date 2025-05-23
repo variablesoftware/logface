@@ -4,8 +4,8 @@
  * @returns An object with log methods bound to the provided options
  * @public
  */
-import { emitLog, setLogLevel, getLogLevel } from './emitLog.js';
-import type { LogOptions } from '../types/Logger';
+import { emitLog, setLogLevel, getLogLevel } from "./emitLog.js";
+import type { LogOptions } from "../types/Logger";
 
 export function createLogWithOptions(options: LogOptions) {
   return {
@@ -17,7 +17,7 @@ export function createLogWithOptions(options: LogOptions) {
     /**
      * Idiomatic setter for global log level (for consistency with log.setLevel)
      */
-    setLevel: (level: import('../types/Logger').RuntimeLogLevel) => {
+    setLevel: (level: import("../types/Logger").RuntimeLogLevel) => {
       setLogLevel(level);
     },
     /**

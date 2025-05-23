@@ -35,6 +35,7 @@ import { emitLog } from "./core/emitLog.js";
 import { createLogWithOptions } from "./core/createLogWithOptions.js";
 import { globalLogOptions } from "./core/globalLogOptions.js";
 import { setLogLevel, getLogLevel } from "./core/emitLog.js";
+import { loadUserConfig, reloadUserConfig } from './core/globalLogOptions.js';
 
 /**
  * Update global logging defaults at runtime.
@@ -66,8 +67,12 @@ export const log = {
    * Runtime log level. Only logs at or above this level will be emitted (unless LOG/LOG_VERBOSE is set).
    * Can be set at runtime: log.level = 'warn'
    */
-  get level() { return getLogLevel(); },
-  set level(l) { setLogLevel(l); },
+  get level() {
+    return getLogLevel();
+  },
+  set level(l) {
+    setLogLevel(l);
+  },
   setLogLevel,
   getLogLevel,
 };
@@ -82,27 +87,36 @@ interface LogfaceHybrid {
   options: typeof createLogWithOptions;
   withTag: (_tag: string) => ReturnType<typeof createLogWithOptions>;
   setup: typeof setup;
-  level: LogLevel | 'silent';
+  level: LogLevel | "silent";
   setLogLevel: typeof setLogLevel;
   getLogLevel: typeof getLogLevel;
+  loadUserConfig: typeof import("./core/globalLogOptions.js").loadUserConfig;
+  reloadUserConfig: typeof import("./core/globalLogOptions.js").reloadUserConfig;
 }
 
-const logface: LogfaceHybrid = function(_level: LogLevel, ..._args: unknown[]) {
+const logface: LogfaceHybrid = function (
+  _level: LogLevel,
+  ..._args: unknown[]
+) {
   emitLog(_level, _args);
 } as LogfaceHybrid;
 
-['debug', 'info', 'warn', 'error', 'log'].forEach((_level) => {
-  (logface as unknown as Record<string, unknown>)[_level] = (..._args: unknown[]) => emitLog(_level as LogLevel, _args);
+["debug", "info", "warn", "error", "log"].forEach((_level) => {
+  (logface as unknown as Record<string, unknown>)[_level] = (
+    ..._args: unknown[]
+  ) => emitLog(_level as LogLevel, _args);
 });
 logface.options = createLogWithOptions;
 logface.withTag = (_tag: string) => createLogWithOptions({ tag: _tag });
 logface.setup = setup;
-Object.defineProperty(logface, 'level', {
+Object.defineProperty(logface, "level", {
   get: getLogLevel,
   set: setLogLevel,
 });
 logface.setLogLevel = setLogLevel;
 logface.getLogLevel = getLogLevel;
+logface.loadUserConfig = loadUserConfig;
+logface.reloadUserConfig = reloadUserConfig;
 
 export default logface;
 export { logface };

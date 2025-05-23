@@ -1,11 +1,15 @@
 // tests/unit/logface-core.test.ts
 // Core logface API and formatting tests
 import logface from "../../src";
-import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
 
 describe("logface core", () => {
   let spy: ReturnType<typeof vi.spyOn>;
   let originalLogEnv: string | undefined;
+
+  beforeAll(() => {
+    process.env.LOGFACE_NO_EMOJI = '1';
+  });
 
   beforeEach(() => {
     spy = vi.spyOn(console, "info").mockImplementation(() => {});

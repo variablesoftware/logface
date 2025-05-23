@@ -1,11 +1,17 @@
+process.env.LOGFACE_NO_EMOJI = '1';
+
 // tests/unit/logface-nomatch.test.ts
 // Tests for LOG env with no match, empty, or invalid patterns
 import logface from "../../src";
-import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
 
 describe("LOG env no match, empty, or invalid patterns", () => {
   let infoSpy: ReturnType<typeof vi.spyOn>;
   let originalLogEnv: string | undefined;
+
+  beforeAll(() => {
+    process.env.LOGFACE_NO_EMOJI = '1';
+  });
 
   beforeEach(() => {
     infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
@@ -32,7 +38,9 @@ describe("LOG env no match, empty, or invalid patterns", () => {
 
   it("should not throw or log for invalid LOG pattern", () => {
     process.env.LOG = "!!!";
-    expect(() => logface.options({ tag: "auth" }).info("should not log")).not.toThrow();
+    expect(() =>
+      logface.options({ tag: "auth" }).info("should not log"),
+    ).not.toThrow();
     expect(infoSpy).not.toHaveBeenCalled();
   });
 });

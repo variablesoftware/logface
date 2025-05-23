@@ -9,7 +9,11 @@
 //   - logface-suppress.test.ts
 // You may safely delete this file if all tests pass in the new structure.
 import logface from "../../src";
-import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
+
+beforeAll(() => {
+  process.env.LOGFACE_NO_EMOJI = '1';
+});
 
 describe("LOG env filtering and log levels", () => {
   let infoSpy: ReturnType<typeof vi.spyOn>;
@@ -72,7 +76,7 @@ describe("LOG env filtering and log levels", () => {
     expect(infoSpy).not.toHaveBeenCalled();
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringMatching(/\[W]\[[a-z0-9_.-]+]/i),
-      "should log"
+      "should log",
     );
     warnSpy.mockRestore();
   });
@@ -97,7 +101,9 @@ describe("LOG env filtering and log levels", () => {
 
   it("should not throw or log for invalid LOG pattern", () => {
     process.env.LOG = "!!!";
-    expect(() => logface.options({ tag: "auth" }).info("should not log")).not.toThrow();
+    expect(() =>
+      logface.options({ tag: "auth" }).info("should not log"),
+    ).not.toThrow();
     expect(infoSpy).not.toHaveBeenCalled();
   });
 
@@ -124,7 +130,7 @@ describe("LOG env filtering and log levels", () => {
     expect(infoSpy).toHaveBeenCalledWith("[I][auth]", "tag match");
     expect(infoSpy).toHaveBeenCalledWith(
       expect.stringMatching(/\[I]\[other]/i),
-      "level match"
+      "level match",
     );
   });
 
@@ -132,8 +138,12 @@ describe("LOG env filtering and log levels", () => {
     process.env.LOG = "*";
     infoSpy.mockRestore();
     const infoSpy2 = vi.spyOn(console, "info").mockImplementation(() => {});
-    logface.options({ tag: "ts", timestamp: true, levelShort: false }).info("combo");
-    expect(infoSpy2.mock.calls[0][0]).toMatch(/^\[\d{4}-\d{2}-\d{2}T.*Z] \[INFO]\[ts]/);
+    logface
+      .options({ tag: "ts", timestamp: true, levelShort: false })
+      .info("combo");
+    expect(infoSpy2.mock.calls[0][0]).toMatch(
+      /^\[\d{4}-\d{2}-\d{2}T.*Z] \[INFO]\[ts]/,
+    );
     expect(infoSpy2.mock.calls[0][1]).toBe("combo");
     infoSpy2.mockRestore();
   });

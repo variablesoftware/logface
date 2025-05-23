@@ -17,12 +17,12 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
     env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SCOPE: ${{secrets.scope}}
-          NODE_AUTH_TOKEN: ${{ secrets.VS_NPM_TOKEN}}
-          NPM_TOKEN: ${{ secrets.VS_NPM_TOKEN}}
-          #YARN_NPM_CONFIG_PROVENANCE:
-          SMOKE: 1
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SCOPE: ${{secrets.scope}}
+      NODE_AUTH_TOKEN: ${{ secrets.VS_NPM_TOKEN}}
+      NPM_TOKEN: ${{ secrets.VS_NPM_TOKEN}}
+      #YARN_NPM_CONFIG_PROVENANCE:
+      SMOKE: 1
 
     steps:
       - uses: actions/checkout@v4
@@ -64,10 +64,10 @@ jobs:
       - run: yarn install --immutable
       #- run: cat /home/runner/work/_temp/.npmrc
       #- run: cat /home/runner/work/_temp/.yarnrc.yml
-        #- run: yarn add -D husky
-        #- run: yarn npm whoami --scope ${{secrets.scope}} --publish
-        #- run: yarn npm publish --access public
-        #- run: yarn npm publish --provenance --access public
+      #- run: yarn add -D husky
+      #- run: yarn npm whoami --scope ${{secrets.scope}} --publish
+      #- run: yarn npm publish --access public
+      #- run: yarn npm publish --provenance --access public
       - run: yarn semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,11 +1,15 @@
 // tests/unit/logface-env-edge.test.ts
 // Tests for LOG env edge cases and runtime changes
 import { log } from "../../src";
-import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
 
 describe("LOG env edge cases", () => {
   let infoSpy: ReturnType<typeof vi.spyOn>;
   let originalLogEnv: string | undefined;
+
+  beforeAll(() => {
+    process.env.LOGFACE_NO_EMOJI = '1';
+  });
 
   beforeEach(() => {
     infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
@@ -20,7 +24,9 @@ describe("LOG env edge cases", () => {
 
   it("should not throw or log for invalid LOG pattern", () => {
     process.env.LOG = "!!!";
-    expect(() => log.options({ tag: "auth" }).info("should not log")).not.toThrow();
+    expect(() =>
+      log.options({ tag: "auth" }).info("should not log"),
+    ).not.toThrow();
     expect(infoSpy).not.toHaveBeenCalled();
   });
 
@@ -47,7 +53,7 @@ describe("LOG env edge cases", () => {
     expect(infoSpy).toHaveBeenCalledWith("[I][auth]", "tag match");
     expect(infoSpy).toHaveBeenCalledWith(
       expect.stringMatching(/\[I]\[other]/i),
-      "level match"
+      "level match",
     );
   });
 });

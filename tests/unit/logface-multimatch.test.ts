@@ -1,11 +1,15 @@
 // tests/unit/logface-multimatch.test.ts
 // Tests for LOG env with multiple patterns and special characters
 import logface from "../../src";
-import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
 
 describe("LOG env multi-pattern and special character filtering", () => {
   let infoSpy: ReturnType<typeof vi.spyOn>;
   let originalLogEnv: string | undefined;
+
+  beforeAll(() => {
+    process.env.LOGFACE_NO_EMOJI = '1';
+  });
 
   beforeEach(() => {
     infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
@@ -39,7 +43,7 @@ describe("LOG env multi-pattern and special character filtering", () => {
     expect(infoSpy).toHaveBeenCalledWith("[I][auth]", "tag match");
     expect(infoSpy).toHaveBeenCalledWith(
       expect.stringMatching(/\[I]\[other]/i),
-      "level match"
+      "level match",
     );
   });
 });

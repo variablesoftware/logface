@@ -1,3 +1,6 @@
+logface.config.js
+logface.config.mjs
+
 *.swp
 # .gitignore
 # This file is used to ignore files and directories that should not be tracked by Git.

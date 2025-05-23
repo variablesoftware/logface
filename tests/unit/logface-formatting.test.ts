@@ -7,8 +7,12 @@ describe("logface formatting options", () => {
   it("should format correctly with timestamp and levelShort false", () => {
     process.env.LOG = "*";
     const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
-    logface.options({ tag: "ts", timestamp: true, levelShort: false }).info("combo");
-    expect(infoSpy.mock.calls[0][0]).toMatch(/^\[\d{4}-\d{2}-\d{2}T.*Z] \[INFO]\[ts]/);
+    logface
+      .options({ tag: "ts", timestamp: true, levelShort: false })
+      .info("combo");
+    expect(infoSpy.mock.calls[0][0]).toMatch(
+      /^\[\d{4}-\d{2}-\d{2}T.*Z] \[INFO]\[ts]/,
+    );
     expect(infoSpy.mock.calls[0][1]).toBe("combo");
     infoSpy.mockRestore();
   });
