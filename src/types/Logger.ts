@@ -39,9 +39,9 @@ export type Logger = {
 
   /**
    * Set the global log level at runtime (idiomatic setter).
-   * @param level - The new log level (e.g., 'warn', 'error', 'silent')
+   * @param _level - The new log level (e.g., 'warn', 'error', 'silent')
    */
-  setLevel?: (level: RuntimeLogLevel) => void;
+  setLevel?: (_level: RuntimeLogLevel) => void;
 
   /**
    * Get the current global log level (idiomatic getter).

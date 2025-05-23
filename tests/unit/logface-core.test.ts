@@ -46,10 +46,10 @@ describe("logface core", () => {
   it("should allow idiomatic log level change via setLevel/getLevel on tagged logger", () => {
     const tagged = logface.options({ tag: "testtag" });
     // Set to 'error' and check
-    tagged.setLevel && tagged.setLevel("error");
-    expect(tagged.getLevel && tagged.getLevel()).toBe("error");
+    if (tagged.setLevel) tagged.setLevel("error");
+    if (tagged.getLevel) expect(tagged.getLevel()).toBe("error");
     // Restore to 'debug'
-    tagged.setLevel && tagged.setLevel("debug");
-    expect(tagged.getLevel && tagged.getLevel()).toBe("debug");
+    if (tagged.setLevel) tagged.setLevel("debug");
+    if (tagged.getLevel) expect(tagged.getLevel()).toBe("debug");
   });
 });
