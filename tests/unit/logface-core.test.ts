@@ -42,4 +42,14 @@ describe("logface core", () => {
     expect(spy.mock.calls[0][0]).toMatch(/^\[\d{4}-\d{2}-\d{2}T.*Z] \[I]\[ts]/);
     expect(spy.mock.calls[0][1]).toBe("has timestamp");
   });
+
+  it("should allow idiomatic log level change via setLevel/getLevel on tagged logger", () => {
+    const tagged = logface.options({ tag: "testtag" });
+    // Set to 'error' and check
+    tagged.setLevel && tagged.setLevel("error");
+    expect(tagged.getLevel && tagged.getLevel()).toBe("error");
+    // Restore to 'debug'
+    tagged.setLevel && tagged.setLevel("debug");
+    expect(tagged.getLevel && tagged.getLevel()).toBe("debug");
+  });
 });
