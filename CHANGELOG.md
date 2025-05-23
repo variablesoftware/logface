@@ -1,3 +1,15 @@
+# [0.3.0](https://github.com/variablesoftware/logface/compare/v0.2.9...v0.3.0) (2025-05-23)
+
+
+### Bug Fixes
+
+* update parameter name in setLevel method and improve test assertions for idiomatic usage ([576a0c8](https://github.com/variablesoftware/logface/commit/576a0c87f8444eac19f6f5dff0cca09e2324d2b0))
+
+
+### Features
+
+* add setLevel and getLevel methods for runtime log level management ([37c4bd4](https://github.com/variablesoftware/logface/commit/37c4bd47eb49d979f1423513da7ffa9a8844206e))
+
 ## [0.2.9](https://github.com/variablesoftware/logface/compare/v0.2.8...v0.2.9) (2025-05-21)
 
 
