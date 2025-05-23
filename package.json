@@ -1,6 +1,6 @@
 {
   "name": "@variablesoftware/logface",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "🎛️🪵😎 A fun, lightweight, structured console-style logger with tag-based filtering for TypeScript projects.",
   "keywords": [
     "logger",
