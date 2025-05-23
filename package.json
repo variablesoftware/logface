@@ -67,9 +67,9 @@
     ":patch": "yarn lint && yarn version patch",
     ":minor": "yarn lint && yarn version minor",
     ":major": "yarn lint && yarn version major",
-    "release": "yarn semantic-release",
+    "release": "yarn lint && yarn semantic-release",
     "release:dry": "yarn semantic-release --dry-run",
-    "release2": "yarn clean && yarn build:release && git push && git push --tags && yarn npm publish --access public",
+    "release2": "yarn lint && yarn clean && yarn build:release && git push && git push --tags && yarn npm publish --access public",
     "release2:next": "yarn clean && yarn build:release && git push && git push --tags && yarn npm publish --access public --next",
     "release2:dry": "yarn clean && yarn build:release && npm pack --dry-run && yarn pack --dry-run"
   },
