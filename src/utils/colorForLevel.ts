@@ -25,11 +25,13 @@ let kleur: unknown = null;
     picocolors = null;
   }
   try {
+    // @ts-expect-error: optional dependency, may not be installed
     colorette = await import('colorette');
   } catch {
     colorette = null;
   }
   try {
+    // @ts-expect-error: optional dependency, may not be installed
     kleur = await import('kleur');
   } catch {
     kleur = null;
