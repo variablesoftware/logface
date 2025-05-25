@@ -2,6 +2,8 @@
 // Tests for LOG env edge cases and runtime changes
 import { log } from "../../src";
 import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
+import { testIdVars } from '../../src/core/emitLog';
+import { testTagPrefixRegex, escapeRegExp, matchLogPrefix } from './testLogPrefixHelpers';
 
 describe("LOG env edge cases", () => {
   let infoSpy: ReturnType<typeof vi.spyOn>;
@@ -33,7 +35,10 @@ describe("LOG env edge cases", () => {
   it("should respect LOG changes at runtime", () => {
     process.env.LOG = "foo";
     log.options({ tag: "foo" }).info("should log");
-    expect(infoSpy).toHaveBeenCalledWith("[I][foo]", "should log");
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'foo')),
+      "should log"
+    );
     infoSpy.mockClear();
     process.env.LOG = "bar";
     log.options({ tag: "foo" }).info("should not log");
@@ -43,17 +48,23 @@ describe("LOG env edge cases", () => {
   it("should handle tags with special characters", () => {
     process.env.LOG = "foo:bar-baz_123";
     log.options({ tag: "foo:bar-baz_123" }).info("special tag");
-    expect(infoSpy).toHaveBeenCalledWith("[I][foo:bar-baz_123]", "special tag");
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'foo:bar-baz_123')),
+      "special tag"
+    );
   });
 
   it("should match both level and tag if LOG contains both", () => {
     process.env.LOG = "info,auth";
     log.options({ tag: "auth" }).info("tag match");
     log.options({ tag: "other" }).info("level match");
-    expect(infoSpy).toHaveBeenCalledWith("[I][auth]", "tag match");
     expect(infoSpy).toHaveBeenCalledWith(
-      expect.stringMatching(/\[I]\[other]/i),
-      "level match",
+      expect.stringMatching(matchLogPrefix('I', 'auth')),
+      "tag match"
+    );
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'other')),
+      "level match"
     );
   });
 });

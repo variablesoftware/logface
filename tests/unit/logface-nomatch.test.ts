@@ -4,6 +4,7 @@ process.env.LOGFACE_NO_EMOJI = '1';
 // Tests for LOG env with no match, empty, or invalid patterns
 import logface from "../../src";
 import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
+import { matchFullLogPrefix } from './testLogPrefixHelpers';
 
 describe("LOG env no match, empty, or invalid patterns", () => {
   let infoSpy: ReturnType<typeof vi.spyOn>;
@@ -33,7 +34,10 @@ describe("LOG env no match, empty, or invalid patterns", () => {
   it("should emit all logs if LOG is empty", () => {
     delete process.env.LOG;
     logface.options({ tag: "bar" }).info("should log");
-    expect(infoSpy).toHaveBeenCalledWith("[I][bar]", "should log");
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchFullLogPrefix({ level: 'I', tag: 'bar' })),
+      "should log"
+    );
   });
 
   it("should not throw or log for invalid LOG pattern", () => {

@@ -3,6 +3,7 @@ process.env.LOGFACE_NO_EMOJI = '1';
 // Tests for correct routing to console methods and log level support
 import logface from "../../src";
 import { vi, describe, it, expect, beforeAll, afterAll } from "vitest";
+import { matchFullLogPrefix } from './testLogPrefixHelpers';
 
 beforeAll(() => {
   process.env._DEBUG_OLD = process.env.DEBUG;
@@ -28,15 +29,15 @@ describe("logface routing and log levels", () => {
     logface("error", "error msg");
 
     expect(debug).toHaveBeenCalledWith(
-      expect.stringMatching(/\[D]\[[a-z0-9_.-]+]/i),
+      expect.stringMatching(matchFullLogPrefix({ level: 'D', tag: expect.any(String) })),
       "debug msg",
     );
     expect(warn).toHaveBeenCalledWith(
-      expect.stringMatching(/\[W]\[[a-z0-9_.-]+]/i),
+      expect.stringMatching(matchFullLogPrefix({ level: 'W', tag: expect.any(String) })),
       "warn msg",
     );
     expect(error).toHaveBeenCalledWith(
-      expect.stringMatching(/\[E]\[[a-z0-9_.-]+]/i),
+      expect.stringMatching(matchFullLogPrefix({ level: 'E', tag: expect.any(String) })),
       "error msg",
     );
 
@@ -49,7 +50,10 @@ describe("logface routing and log levels", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     process.env.LOG = "*";
     logface.options({ tag: "console" }).log("log fallback");
-    expect(logSpy).toHaveBeenCalledWith("[L][console]", "log fallback");
+    expect(logSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchFullLogPrefix({ level: 'L', tag: 'console' })),
+      "log fallback"
+    );
     logSpy.mockRestore();
   });
 });

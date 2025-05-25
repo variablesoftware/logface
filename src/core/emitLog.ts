@@ -41,6 +41,13 @@ export function getLogLevel(): LogLevel | "silent" {
   return runtimeLogLevel;
 }
 
+// --- Generic test suite identifier tags ---
+export const testIdVars = [
+  "VITEST_POOL_ID",
+  "VITEST_WORKER_ID",
+  // Add more keys here for other test runners as needed
+];
+
 export function emitLog(
   level: LogLevel,
   args: unknown[],
@@ -48,6 +55,10 @@ export function emitLog(
 ): void {
   // Environment variables for log filtering. Uses process.env if available, otherwise empty object.
   const env = typeof process !== "undefined" && process.env ? process.env : {};
+  const testTags = testIdVars
+    .map((key) => (env[key] ? `[${key.toLowerCase().replace(/_id$/, '').replace('vitest_', '')}:${env[key]}]` : ""))
+    .filter(Boolean)
+    .join("");
   // Only filter debug logs if LOG/LOG_VERBOSE is set
   const filter = env.LOG || env.LOG_VERBOSE || "";
   // If LOG/LOG_VERBOSE is set, use filtering logic; otherwise, always emit debug logs
@@ -90,7 +101,8 @@ export function emitLog(
       : level[0].toUpperCase()
     : level.toUpperCase();
   const emoji = emojiForLevel(level);
-  const prefix = `${ts ? styleTimestamp(ts) : ""}[${lvl}][${styleTag(tag)}]${emoji ? " " + emoji : ""}`;
+  // Prepend testTags to the prefix
+  const prefix = `${ts ? styleTimestamp(ts) : ""}${testTags}[${lvl}][${styleTag(tag)}]${emoji ? " " + emoji : ""}`;
   const color = colorForLevel(level);
   const target = level === "log" ? console.log : console[level];
   let outArgs = args;

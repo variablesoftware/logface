@@ -10,6 +10,8 @@
 // You may safely delete this file if all tests pass in the new structure.
 import logface from "../../src";
 import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
+import { testIdVars } from '../../src/core/emitLog';
+import { testTagPrefixRegex, escapeRegExp, matchLogPrefix } from './testLogPrefixHelpers';
 
 beforeAll(() => {
   process.env.LOGFACE_NO_EMOJI = '1';
@@ -39,19 +41,28 @@ describe("LOG env filtering and log levels", () => {
   it("should allow logs matching LOG filter", () => {
     process.env.LOG = "match";
     logface.options({ tag: "match" }).info("should appear");
-    expect(infoSpy).toHaveBeenCalledWith("[I][match]", "should appear");
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'match')),
+      "should appear"
+    );
   });
 
   it("should match LOG filter with wildcard auth*", () => {
     process.env.LOG = "auth*";
     logface.options({ tag: "authLogin" }).info("matched wildcard");
-    expect(infoSpy).toHaveBeenCalledWith("[I][authLogin]", "matched wildcard");
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'authLogin')),
+      "matched wildcard"
+    );
   });
 
   it("should match LOG filter with wildcard auth:*", () => {
     process.env.LOG = "auth:*";
     logface.options({ tag: "auth:signup" }).info("matched scoped");
-    expect(infoSpy).toHaveBeenCalledWith("[I][auth:signup]", "matched scoped");
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'auth:signup')),
+      "matched scoped"
+    );
   });
 
   it("should not match unrelated scope", () => {
@@ -64,8 +75,14 @@ describe("LOG env filtering and log levels", () => {
     process.env.LOG = "auth,metrics";
     logface.options({ tag: "auth" }).info("auth log");
     logface.options({ tag: "metrics" }).info("metrics log");
-    expect(infoSpy).toHaveBeenCalledWith("[I][auth]", "auth log");
-    expect(infoSpy).toHaveBeenCalledWith("[I][metrics]", "metrics log");
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'auth')),
+      "auth log"
+    );
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'metrics')),
+      "metrics log"
+    );
   });
 
   it("should only emit logs for the specified level", () => {
@@ -90,13 +107,19 @@ describe("LOG env filtering and log levels", () => {
   it("should emit all logs if LOG is '*'", () => {
     process.env.LOG = "*";
     logface.options({ tag: "foo" }).info("should log");
-    expect(infoSpy).toHaveBeenCalledWith("[I][foo]", "should log");
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'foo')),
+      "should log"
+    );
   });
 
   it("should emit all logs if LOG is empty", () => {
     delete process.env.LOG;
     logface.options({ tag: "bar" }).info("should log");
-    expect(infoSpy).toHaveBeenCalledWith("[I][bar]", "should log");
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'bar')),
+      "should log"
+    );
   });
 
   it("should not throw or log for invalid LOG pattern", () => {
@@ -110,7 +133,10 @@ describe("LOG env filtering and log levels", () => {
   it("should respect LOG changes at runtime", () => {
     process.env.LOG = "foo";
     logface.options({ tag: "foo" }).info("should log");
-    expect(infoSpy).toHaveBeenCalledWith("[I][foo]", "should log");
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'foo')),
+      "should log"
+    );
     infoSpy.mockClear();
     process.env.LOG = "bar";
     logface.options({ tag: "foo" }).info("should not log");
@@ -120,17 +146,23 @@ describe("LOG env filtering and log levels", () => {
   it("should handle tags with special characters", () => {
     process.env.LOG = "foo:bar-baz_123";
     logface.options({ tag: "foo:bar-baz_123" }).info("special tag");
-    expect(infoSpy).toHaveBeenCalledWith("[I][foo:bar-baz_123]", "special tag");
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'foo:bar-baz_123')),
+      "special tag"
+    );
   });
 
   it("should match both level and tag if LOG contains both", () => {
     process.env.LOG = "info,auth";
     logface.options({ tag: "auth" }).info("tag match");
     logface.options({ tag: "other" }).info("level match");
-    expect(infoSpy).toHaveBeenCalledWith("[I][auth]", "tag match");
     expect(infoSpy).toHaveBeenCalledWith(
-      expect.stringMatching(/\[I]\[other]/i),
-      "level match",
+      expect.stringMatching(matchLogPrefix('I', 'auth')),
+      "tag match"
+    );
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'other')),
+      "level match"
     );
   });
 
@@ -142,7 +174,7 @@ describe("LOG env filtering and log levels", () => {
       .options({ tag: "ts", timestamp: true, levelShort: false })
       .info("combo");
     expect(infoSpy2.mock.calls[0][0]).toMatch(
-      /^\[\d{4}-\d{2}-\d{2}T.*Z] \[INFO]\[ts]/,
+      /^\[\d{4}-\d{2}-\d{2}T.*Z] (?:\[[^\]]+])*\[INFO]\[ts]/,
     );
     expect(infoSpy2.mock.calls[0][1]).toBe("combo");
     infoSpy2.mockRestore();
