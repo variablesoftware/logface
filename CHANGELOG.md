@@ -1,3 +1,20 @@
+# [0.4.0](https://github.com/variablesoftware/logface/compare/v0.3.0...v0.4.0) (2025-05-25)
+
+
+### Bug Fixes
+
+* add linting step to release scripts for improved code quality ([fc076eb](https://github.com/variablesoftware/logface/commit/fc076ebb49c16970af7dd8674bfb3785e46b9645))
+* add linting step to version bump scripts for improved code quality ([3dfee5d](https://github.com/variablesoftware/logface/commit/3dfee5db027d6274f43216935b9ee121387b8bc2))
+* handle optional color library imports with error handling ([70fe972](https://github.com/variablesoftware/logface/commit/70fe97212afa954cec6f222cdb4d8a63f42e0f4f))
+
+
+### Features
+
+* add reusable log prefix matching helpers with regex support ([20e04bf](https://github.com/variablesoftware/logface/commit/20e04bf2b4d040b89244c1d25b426f9baf50766c))
+* add user config loading and reloading functionality ([e9d9b66](https://github.com/variablesoftware/logface/commit/e9d9b66c4dcdb543dcab89427d4e41349c8bb359))
+* enhance config loading functionality and improve log prefix matching tests ([0d0bff2](https://github.com/variablesoftware/logface/commit/0d0bff2cdae60c78d7e521befd69017e53d5ebb8))
+* enhance log prefix matching helpers to support wildcard and optional tags ([958239b](https://github.com/variablesoftware/logface/commit/958239b71761517d43d7a307ec1e4be6b78466cd))
+
 # [0.3.0](https://github.com/variablesoftware/logface/compare/v0.2.9...v0.3.0) (2025-05-23)
 
 ### Bug Fixes
