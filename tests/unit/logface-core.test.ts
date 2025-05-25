@@ -3,7 +3,7 @@
 import logface from "../../src";
 import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
 import { testIdVars } from '../../src/core/emitLog';
-import { testTagPrefixRegex, escapeRegExp, matchLogPrefix } from './testLogPrefixHelpers';
+import { testTagPrefixRegex, escapeRegExp, matchLogPrefix, matchLogPrefixWithTimestamp } from './testLogPrefixHelpers';
 
 describe("logface core", () => {
   let spy: ReturnType<typeof vi.spyOn>;
@@ -26,7 +26,7 @@ describe("logface core", () => {
 
   it("should emit plain log with default tag", () => {
     logface("info", "plain info");
-    expect(spy.mock.calls[0][0]).toMatch(expect.stringMatching(matchLogPrefix('I', 'default')));
+    expect(spy.mock.calls[0][0]).toMatch(expect.stringMatching(matchLogPrefix('I', 'unknown')));
     expect(spy.mock.calls[0][1]).toBe("plain info");
   });
 
@@ -50,7 +50,7 @@ describe("logface core", () => {
 
   it("should include timestamp when enabled", () => {
     logface.options({ tag: "ts", timestamp: true }).info("has timestamp");
-    expect(spy.mock.calls[0][0]).toMatch(expect.stringMatching(matchLogPrefix('I', 'ts')));
+    expect(spy.mock.calls[0][0]).toMatch(expect.stringMatching(matchLogPrefixWithTimestamp('I', 'ts')));
     expect(spy.mock.calls[0][1]).toBe("has timestamp");
   });
 
