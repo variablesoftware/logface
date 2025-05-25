@@ -32,6 +32,7 @@ import {
   beforeAll,
   afterAll,
 } from "vitest";
+import { matchLogPrefix } from './unit/testLogPrefixHelpers';
 
 process.env.LOGFACE_NO_EMOJI = '1';
 
@@ -72,19 +73,19 @@ describe("logface", () => {
   it("should allow logs matching LOG filter", () => {
     process.env.LOG = "match";
     log.options({ tag: "match" }).info("should appear");
-    expect(spy).toHaveBeenCalledWith("[I][match]", "should appear");
+    expect(spy).toHaveBeenCalledWith(expect.stringMatching(matchLogPrefix('I', 'match')), "should appear");
   });
 
   it("should match LOG filter with wildcard auth*", () => {
     process.env.LOG = "auth*";
     log.options({ tag: "authLogin" }).info("matched wildcard");
-    expect(spy).toHaveBeenCalledWith("[I][authLogin]", "matched wildcard");
+    expect(spy).toHaveBeenCalledWith(expect.stringMatching(matchLogPrefix('I', 'authLogin')), "matched wildcard");
   });
 
   it("should match LOG filter with wildcard auth:*", () => {
     process.env.LOG = "auth:*";
     log.options({ tag: "auth:signup" }).info("matched scoped");
-    expect(spy).toHaveBeenCalledWith("[I][auth:signup]", "matched scoped");
+    expect(spy).toHaveBeenCalledWith(expect.stringMatching(matchLogPrefix('I', 'auth:signup')), "matched scoped");
   });
 
   it("should not match unrelated scope", () => {
@@ -124,7 +125,7 @@ describe("logface", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     process.env.LOG = "*";
     log.options({ tag: "console" }).log("log fallback");
-    expect(logSpy).toHaveBeenCalledWith("[L][console]", "log fallback");
+    expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(matchLogPrefix('L', 'console')), "log fallback");
     logSpy.mockRestore();
   });
 });
@@ -148,8 +149,8 @@ describe("LOG env edge cases", () => {
     process.env.LOG = "auth,metrics";
     log.options({ tag: "auth" }).info("auth log");
     log.options({ tag: "metrics" }).info("metrics log");
-    expect(infoSpy).toHaveBeenCalledWith("[I][auth]", "auth log");
-    expect(infoSpy).toHaveBeenCalledWith("[I][metrics]", "metrics log");
+    expect(infoSpy).toHaveBeenCalledWith(expect.stringMatching(matchLogPrefix('I', 'auth')), "auth log");
+    expect(infoSpy).toHaveBeenCalledWith(expect.stringMatching(matchLogPrefix('I', 'metrics')), "metrics log");
   });
 
   it("should only emit logs for the specified level", () => {
@@ -174,13 +175,13 @@ describe("LOG env edge cases", () => {
   it("should emit all logs if LOG is '*'", () => {
     process.env.LOG = "*";
     log.options({ tag: "foo" }).info("should log");
-    expect(infoSpy).toHaveBeenCalledWith("[I][foo]", "should log");
+    expect(infoSpy).toHaveBeenCalledWith(expect.stringMatching(matchLogPrefix('I', 'foo')), "should log");
   });
 
   it("should emit all logs if LOG is empty", () => {
     delete process.env.LOG;
     log.options({ tag: "bar" }).info("should log");
-    expect(infoSpy).toHaveBeenCalledWith("[I][bar]", "should log");
+    expect(infoSpy).toHaveBeenCalledWith(expect.stringMatching(matchLogPrefix('I', 'bar')), "should log");
   });
 
   it("should not throw or log for invalid LOG pattern", () => {
@@ -194,7 +195,7 @@ describe("LOG env edge cases", () => {
   it("should respect LOG changes at runtime", () => {
     process.env.LOG = "foo";
     log.options({ tag: "foo" }).info("should log");
-    expect(infoSpy).toHaveBeenCalledWith("[I][foo]", "should log");
+    expect(infoSpy).toHaveBeenCalledWith(expect.stringMatching(matchLogPrefix('I', 'foo')), "should log");
     infoSpy.mockClear();
     process.env.LOG = "bar";
     log.options({ tag: "foo" }).info("should not log");
@@ -204,18 +205,15 @@ describe("LOG env edge cases", () => {
   it("should handle tags with special characters", () => {
     process.env.LOG = "foo:bar-baz_123";
     log.options({ tag: "foo:bar-baz_123" }).info("special tag");
-    expect(infoSpy).toHaveBeenCalledWith("[I][foo:bar-baz_123]", "special tag");
+    expect(infoSpy).toHaveBeenCalledWith(expect.stringMatching(matchLogPrefix('I', 'foo:bar-baz_123')), "special tag");
   });
 
   it("should match both level and tag if LOG contains both", () => {
     process.env.LOG = "info,auth";
     log.options({ tag: "auth" }).info("tag match");
     log.options({ tag: "other" }).info("level match");
-    expect(infoSpy).toHaveBeenCalledWith("[I][auth]", "tag match");
-    expect(infoSpy).toHaveBeenCalledWith(
-      expect.stringMatching(/\[I]\[other]/i),
-      "level match",
-    );
+    expect(infoSpy).toHaveBeenCalledWith(expect.stringMatching(matchLogPrefix('I', 'auth')), "tag match");
+    expect(infoSpy).toHaveBeenCalledWith(expect.stringMatching(matchLogPrefix('I', 'other')), "level match");
   });
 
   it("should format correctly with timestamp and levelShort false", () => {

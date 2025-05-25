@@ -4,6 +4,7 @@ process.env.LOGFACE_NO_EMOJI = '1';
 // Tests for LOG env changes at runtime
 import logface from "../../src";
 import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
+import { matchLogPrefix } from './testLogPrefixHelpers';
 
 beforeAll(() => {
   process.env.LOGFACE_NO_EMOJI = '1';
@@ -27,7 +28,7 @@ describe("LOG env runtime changes", () => {
   it("should respect LOG changes at runtime", () => {
     process.env.LOG = "foo";
     logface.options({ tag: "foo" }).info("should log");
-    expect(infoSpy).toHaveBeenCalledWith("[I][foo]", "should log");
+    expect(infoSpy).toHaveBeenCalledWith(expect.stringMatching(matchLogPrefix('I', 'foo')), "should log");
     infoSpy.mockClear();
     process.env.LOG = "bar";
     logface.options({ tag: "foo" }).info("should not log");
