@@ -32,7 +32,7 @@ import {
   beforeAll,
   afterAll,
 } from "vitest";
-import { matchLogPrefix } from './unit/testLogPrefixHelpers';
+import { matchLogPrefix, matchFullLogPrefix } from './unit/testLogPrefixHelpers';
 
 process.env.LOGFACE_NO_EMOJI = '1';
 
@@ -223,9 +223,19 @@ describe("LOG env edge cases", () => {
     log
       .options({ tag: "ts", timestamp: true, levelShort: false })
       .info("combo");
-    expect(infoSpy2.mock.calls[0][0]).toMatch(
-      /^\[\d{4}-\d{2}-\d{2}T.*Z] \[INFO]\[ts]/,
-    );
+    const actual = infoSpy2.mock.calls[0][0] as string;
+    const regex = matchFullLogPrefix({ level: 'INFO', tag: 'ts', timestamp: true });
+    // Granular debug output
+    console.log('DEBUG actual:', actual);
+    console.log('DEBUG regex:', regex);
+    console.log('DEBUG actual.length:', actual.length);
+    console.log('DEBUG regex.source:', regex.source);
+    console.log('DEBUG actual char codes:', Array.from(actual).map((c: string) => c.charCodeAt(0)));
+    const expectedPrefix = (actual.match(regex)?.[0] || '') as string;
+    console.log('DEBUG expectedPrefix:', expectedPrefix);
+    console.log('DEBUG expectedPrefix.length:', expectedPrefix.length);
+    console.log('DEBUG expectedPrefix char codes:', Array.from(expectedPrefix).map((c: string) => c.charCodeAt(0)));
+    expect(actual).toMatch(regex);
     expect(infoSpy2.mock.calls[0][1]).toBe("combo");
     infoSpy2.mockRestore();
   });

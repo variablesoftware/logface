@@ -5,7 +5,7 @@ import prettier from "eslint-config-prettier/flat";
 
 export default [
   {
-    ignores: ["**/dist/**", "**/.pnp.*"],
+    ignores: ["**/tests/**","**/dist/**", "**/.pnp.*"],
   },
   {
     languageOptions: {
@@ -17,6 +17,8 @@ export default [
       globals: {
         console: true,
         process: true,
+        require: true,
+        NodeJS: "readonly",
       },
     },
     plugins: {

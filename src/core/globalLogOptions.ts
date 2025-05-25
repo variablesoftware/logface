@@ -3,6 +3,7 @@
  * @internal
  */
 import type { LogOptions } from "../types/Logger.js";
+
 export let globalLogOptions: LogOptions = {
   levelShort: true,
   timestamp: false,
@@ -14,19 +15,34 @@ export let globalLogOptions: LogOptions = {
  */
 export async function loadUserConfig(force = false): Promise<Record<string, unknown> | undefined> {
   if (!force && process.env.LOGFACE_NO_CONFIG === '1') return undefined;
-  // Try to load config file dynamically (ESM or CJS)
   const fs = await import('fs');
   const path = await import('path');
   const cwd = process.cwd();
-  const jsPath = path.join(cwd, 'logface.config.js');
-  const mjsPath = path.join(cwd, 'logface.config.mjs');
-  let config;
-  if (fs.existsSync(jsPath)) {
-    config = (await import(jsPath)).default || (await import(jsPath));
-  } else if (fs.existsSync(mjsPath)) {
-    config = (await import(mjsPath)).default || (await import(mjsPath));
+
+  // Determine config file path
+  let configPath: string | undefined;
+  if (process.env.LOGFACE_CONFIG) {
+    configPath = path.isAbsolute(process.env.LOGFACE_CONFIG)
+      ? process.env.LOGFACE_CONFIG
+      : path.join(cwd, process.env.LOGFACE_CONFIG);
+  } else {
+    const jsPath = path.join(cwd, 'logface.config.js');
+    const mjsPath = path.join(cwd, 'logface.config.mjs');
+    const examplePath = path.join(cwd, 'logface.example.config.js');
+    if (fs.existsSync(jsPath)) configPath = jsPath;
+    else if (fs.existsSync(mjsPath)) configPath = mjsPath;
+    else if (fs.existsSync(examplePath)) configPath = examplePath;
   }
-  return config;
+  if (!configPath || !fs.existsSync(configPath)) return undefined;
+
+  // Always use dynamic import for config files
+  try {
+    const imported = await import(configPath);
+    return imported && imported.default ? imported.default : imported;
+  } catch (e) {
+    if (process.env.NODE_ENV === 'test' || process.env.VITEST) throw e;
+    return undefined;
+  }
 }
 
 /**

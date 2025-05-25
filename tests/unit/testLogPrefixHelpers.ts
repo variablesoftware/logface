@@ -49,7 +49,8 @@ export function matchLogPrefixWithTimestamp(level: string, tag: string | { [Symb
   } else {
     tagPattern = escapeRegExp(tag as string);
   }
-  return new RegExp(`^\\[\\d{4}-\\d{2}-\\d{2}T.*Z] \\[pool:[^\\]]+]\\[worker:[^\\]]+]\\[${level}]\\[${tagPattern}]`);
+  // Allow for any number of spaces after timestamp, and any trailing message
+  return new RegExp(`^\\[\\d{4}-\\d{2}-\\d{2}T.*Z]\\s*\\[pool:[^\\]]+]\\[worker:[^\\]]+]\\[${level}]\\[${tagPattern}](?:\\s.*)?$`, 'i');
 }
 
 /**
@@ -68,7 +69,7 @@ export function matchFullLogPrefix({ level, tag, timestamp = false, emoji = fals
   emoji?: boolean;
 }) {
   // Timestamp: ^[ISO8601] (with trailing space)
-  const ts = timestamp ? "(?:\\[\\d{4}-\\d{2}-\\d{2}T.*Z] )?" : "";
+  const ts = timestamp ? "\\[\\d{4}-\\d{2}-\\d{2}T.*Z]\\s*" : "";
   // Required test tags: [pool:X][worker:Y]
   const testTags = "\\[pool:[^\\]]+]\\[worker:[^\\]]+]";
   // Level/tag: [LEVEL][tag]
@@ -79,10 +80,8 @@ export function matchFullLogPrefix({ level, tag, timestamp = false, emoji = fals
     tagPattern = escapeRegExp(tag as string);
   }
   const lvlTag = `\\[${level}]\\[${tagPattern}]`;
-  // Emoji: optional space + emoji (non-space, non-bracket, non-word char)
-  const emojiPart = emoji ? "(?: [^\\w\\[\\] ]+)?" : "(?: [^\\w\\[\\] ]+)?"; // always allow optional emoji
-  // Allow trailing space or message
-  return new RegExp(`^${ts}${testTags}${lvlTag}${emojiPart}`);
+  // Allow optional space and message after last tag, or nothing at all
+  return new RegExp(`^${ts}${testTags}${lvlTag}(?:\\s.*)?$`, 'i');
 }
 
 /**

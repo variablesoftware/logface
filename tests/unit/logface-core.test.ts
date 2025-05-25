@@ -2,8 +2,7 @@
 // Core logface API and formatting tests
 import logface from "../../src";
 import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
-import { testIdVars } from '../../src/core/emitLog';
-import { testTagPrefixRegex, escapeRegExp, matchLogPrefix, matchLogPrefixWithTimestamp } from './testLogPrefixHelpers';
+import { matchLogPrefix, matchFullLogPrefix } from './testLogPrefixHelpers';
 
 describe("logface core", () => {
   let spy: ReturnType<typeof vi.spyOn>;
@@ -26,7 +25,19 @@ describe("logface core", () => {
 
   it("should emit plain log with default tag", () => {
     logface("info", "plain info");
-    expect(spy.mock.calls[0][0]).toMatch(expect.stringMatching(matchLogPrefix('I', 'unknown')));
+    const actual = spy.mock.calls[0][0] as string;
+    const regex = matchFullLogPrefix({ level: 'I', tag: 'unknown' });
+    // Granular debug output
+    console.log('DEBUG actual:', actual);
+    console.log('DEBUG regex:', regex);
+    console.log('DEBUG actual.length:', actual.length);
+    console.log('DEBUG regex.source:', regex.source);
+    console.log('DEBUG actual char codes:', Array.from(actual).map((c: string) => c.charCodeAt(0)));
+    const expectedPrefix = (actual.match(regex)?.[0] || '') as string;
+    console.log('DEBUG expectedPrefix:', expectedPrefix);
+    console.log('DEBUG expectedPrefix.length:', expectedPrefix.length);
+    console.log('DEBUG expectedPrefix char codes:', Array.from(expectedPrefix).map((c: string) => c.charCodeAt(0)));
+    expect(actual).toMatch(regex);
     expect(spy.mock.calls[0][1]).toBe("plain info");
   });
 
@@ -50,7 +61,19 @@ describe("logface core", () => {
 
   it("should include timestamp when enabled", () => {
     logface.options({ tag: "ts", timestamp: true }).info("has timestamp");
-    expect(spy.mock.calls[0][0]).toMatch(expect.stringMatching(matchLogPrefixWithTimestamp('I', 'ts')));
+    const actual = spy.mock.calls[0][0] as string;
+    const regex = matchFullLogPrefix({ level: 'I', tag: 'ts', timestamp: true });
+    // Granular debug output
+    console.log('DEBUG actual:', actual);
+    console.log('DEBUG regex:', regex);
+    console.log('DEBUG actual.length:', actual.length);
+    console.log('DEBUG regex.source:', regex.source);
+    console.log('DEBUG actual char codes:', Array.from(actual).map((c: string) => c.charCodeAt(0)));
+    const expectedPrefix = (actual.match(regex)?.[0] || '') as string;
+    console.log('DEBUG expectedPrefix:', expectedPrefix);
+    console.log('DEBUG expectedPrefix.length:', expectedPrefix.length);
+    console.log('DEBUG expectedPrefix char codes:', Array.from(expectedPrefix).map((c: string) => c.charCodeAt(0)));
+    expect(actual).toMatch(regex);
     expect(spy.mock.calls[0][1]).toBe("has timestamp");
   });
 
