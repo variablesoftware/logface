@@ -1,6 +1,12 @@
 # @variablesoftware/logface 🎛️🪵😎
 
-[![npm](https://img.shields.io/npm/v/@variablesoftware/logface.svg)](https://www.npmjs.com/package/@variablesoftware/logface)
+[![Test Suite](https://img.shields.io/badge/tests-passing-brightgreen)](https://github.com/variablesoftware/logface/actions)
+[![NPM version](https://img.shields.io/npm/v/@variablesoftware/logface?style=flat-square)](https://www.npmjs.com/package/@variablesoftware/logface)
+[![License](https://img.shields.io/github/license/variablesoftware/logface?style=flat-square)](https://github.com/variablesoftware/logface/blob/main/LICENSE.txt)
+[![Coverage](https://img.shields.io/coveralls/github/variablesoftware/logface/main)](https://coveralls.io/github/variablesoftware/logface)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@variablesoftware/logface)](https://bundlephobia.com/package/@variablesoftware/logface)
+[![Downloads](https://img.shields.io/npm/dm/@variablesoftware/logface)](https://www.npmjs.com/package/@variablesoftware/logface)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/variablesoftware/logface/pulls)
 
 > 🎛️🪵😎 A fun, lightweight, structured console-style logger with tag-based filtering for TypeScript projects.
 
