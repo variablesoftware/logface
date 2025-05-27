@@ -86,7 +86,13 @@ describe('colorForLevel dynamic config and color library loading', () => {
     const mod = await import(configPath);
     mod.__test_internals.__setImportConfig(async (_path: string) => { throw new Error('fail'); });
     await expect(mod.__test_reloadConfig()).resolves.toBeUndefined();
-    expect(mod.__test_internals.userEmojisRef()).toEqual({});
+    expect(mod.__test_internals.userEmojisRef()).toEqual({
+      debug: ["🐞", "🪰", "🪱", "🐜", "🐛", "🔍", "🦠"],
+      info: ["😎", "ℹ️", "💡", "🧭"],
+      log: ["🪵", "📝", "📄", "🗒️"],
+      warn: ["⚠️", "🚧", "🛑"],
+      error: ["🤬", "🔥", "💥", "💣"],
+    });
   });
 
   it('styleWith returns identity if chained style is not a function', async () => {
