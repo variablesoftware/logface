@@ -1,8 +1,8 @@
 declare module 'colorette' {
-  const colorette: any;
+  const colorette: unknown;
   export default colorette;
 }
 declare module 'kleur' {
-  const kleur: any;
+  const kleur: unknown;
   export default kleur;
 }
