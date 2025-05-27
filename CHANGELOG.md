@@ -1,3 +1,25 @@
+# [0.5.0](https://github.com/variablesoftware/logface/compare/v0.4.0...v0.5.0) (2025-05-27)
+
+
+### Bug Fixes
+
+* **husky:** uncomment nvm and corepack commands for pre-push hook 🛠️ ([aa87ed7](https://github.com/variablesoftware/logface/commit/aa87ed7c181012f667252a17fa015a1394b7a5d1))
+* tests(emojis): enhance user emojis reference validation in dynamic config tests 🐞✨ ([4f9e114](https://github.com/variablesoftware/logface/commit/4f9e114f0e577a042b695db1e4687b3f0f8c6871))
+* **tests:** enhance user emojis reference validation in dynamic config tests 🐞✨ ([77cfa35](https://github.com/variablesoftware/logface/commit/77cfa359e7a136dc128c3e7b8d78dbc1291b024e))
+* **tests:** enhance user emojis reference validation in dynamic config tests 🐞✨ ([dd1a411](https://github.com/variablesoftware/logface/commit/dd1a4112392d224a2f5691025f15c079d393c5cb))
+* **types:** add type declarations for optional color libraries 🎨 ([1aa27fe](https://github.com/variablesoftware/logface/commit/1aa27fe9dcff5fac1118f21ffa9c2a556eb25876))
+* **types:** update type declarations from any to unknown for optional color libraries 🎨 ([3a3f273](https://github.com/variablesoftware/logface/commit/3a3f273fb6dc862ab7d99aa0af8811372e238b2d))
+
+
+### Features
+
+* **config:** add example configuration for emoji randomization and color options 🎉 ([c5e66a1](https://github.com/variablesoftware/logface/commit/c5e66a1c91a6ea29001ab5883c5b6965585764a6))
+* **config:** enhance emoji options and improve config loading tests 🎉 ([1b41833](https://github.com/variablesoftware/logface/commit/1b41833244302123edb56469fc4bc5d5613e6f26))
+* **logging:** add negation filtering support for log patterns 🎉 ([0836ecb](https://github.com/variablesoftware/logface/commit/0836ecb44cbd2547561a060f7222b14f5c3dcc21))
+* **logging:** enhance LOG pattern support with negation and multiple delimiters 🎉 ([f623885](https://github.com/variablesoftware/logface/commit/f623885499c0fa721df05b8ffce03ab25cba537c))
+* **tests:** add comprehensive unit tests for logface functionality ([0609f33](https://github.com/variablesoftware/logface/commit/0609f33d147530a7bcb3b67d3f4e70a760884a05))
+* **tests:** update user emojis reference in dynamic config tests 🐞✨ ([95f1214](https://github.com/variablesoftware/logface/commit/95f1214425a575def80d13ee3c819bf807b27aab))
+
 # [0.4.0](https://github.com/variablesoftware/logface/compare/v0.3.0...v0.4.0) (2025-05-25)
 
 
