@@ -12,7 +12,6 @@
  * - Allows tagging, timestamping, and level label customization
  * - Per-call customization via `log.options()`
  * - Wildcard scope matching supported (e.g., `auth*`, `auth:*`)
- * - `withTag()` is deprecated and will be removed in a future release
  *
  * @example
  * ```ts
@@ -61,8 +60,7 @@ export const log = {
   /**
    * @deprecated Use log.options({ tag }) instead.
    */
-  withTag: (_tag: string) => createLogWithOptions({ tag: _tag }),
-  setup,
+    setup,
   /**
    * Runtime log level. Only logs at or above this level will be emitted (unless LOG/LOG_VERBOSE is set).
    * Can be set at runtime: log.level = 'warn'
@@ -85,8 +83,7 @@ interface LogfaceHybrid {
   error: (..._args: unknown[]) => void;
   log: (..._args: unknown[]) => void;
   options: typeof createLogWithOptions;
-  withTag: (_tag: string) => ReturnType<typeof createLogWithOptions>;
-  setup: typeof setup;
+    setup: typeof setup;
   level: LogLevel | "silent";
   setLogLevel: typeof setLogLevel;
   getLogLevel: typeof getLogLevel;
@@ -107,7 +104,6 @@ const logface: LogfaceHybrid = function (
   ) => emitLog(_level as LogLevel, _args);
 });
 logface.options = createLogWithOptions;
-logface.withTag = (_tag: string) => createLogWithOptions({ tag: _tag });
 logface.setup = setup;
 Object.defineProperty(logface, "level", {
   get: getLogLevel,

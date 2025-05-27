@@ -64,10 +64,10 @@ module.exports = {
 - [Wildcard Filtering](#wildcard-filtering)
 - [Silent Mode](#silent-mode)
 - [Tagging and Scoping](#tagging-and-scoping)
-- [Deprecated: log.withTag](#deprecated-logwithtag)
 - [Testing Log Output](#testing-log-output)
 - [Best Practices](#best-practices)
 - [Example: Silent Logging in Production/Edge/Serverless](#example-silent-logging-in-productionedgeserverless)
+- [Negation Filtering](#negation-filtering)
 
 ---
 
@@ -153,15 +153,6 @@ log.options({ tag: "metrics", timestamp: true }).debug("Memory usage");
 
 ---
 
-## Deprecated: log.withTag
-
-- `log.withTag` is deprecated. Use `log.options({ tag })` instead.
-- Example:
-  - Deprecated: `log.withTag('auth').info('...')`
-  - Preferred: `log.options({ tag: 'auth' }).info('...')`
-
----
-
 ## Testing Log Output
 
 - To test debug output, set `process.env.DEBUG = '1'` in your test setup.
@@ -210,6 +201,15 @@ module.exports = {
 ```
 
 > **Tip:** Cloudflare Workers and some edge platforms may require a paid plan to view logs. Suppressing logs by default is a best practice for production deployments.
+
+---
+
+## Negation Filtering
+
+- **Negation is supported in LOG/LOG_VERBOSE patterns:**
+  - Prefix a pattern with `!` to suppress logs matching that pattern, unless also matched by a positive pattern.
+  - Example: `LOG="!foo;auth,debug"` suppresses logs with tag `foo` unless they also match `auth` or `debug`.
+  - Negation and positive patterns can be combined with commas or semicolons.
 
 ---
 

@@ -15,7 +15,7 @@
 ## ✨ Features
 
 - Drop-in replacements for `console.*` methods: `debug`, `info`, `warn`, `error`, `log`
-- Scoped tagging via `log.options({ tag })` (preferred) or `log.withTag(tag)` (**deprecated**)
+- Scoped tagging via `log.options({ tag })`
 - Filters logs using `LOG` or `LOG_VERBOSE` environment variables (supports wildcards)
 - Runtime log level: `log.level = 'warn'` or `log.setLogLevel('warn')` to suppress lower levels (unless LOG/LOG_VERBOSE is set)
 - Per-call configuration: timestamps, level formatting, and custom tags
@@ -25,7 +25,6 @@
 - **Debug output is always gated:** debug logs only appear if `LOG`/`LOG_VERBOSE` match, or if `log.level` is `'debug'` **and** `DEBUG=1` is set
 - `log.level = 'silent'` or `log.setLogLevel('silent')` suppresses all output
 - All log filtering logic falls back to `LOG`/`LOG_VERBOSE` if set, otherwise uses the runtime log level
-- `log.withTag` is deprecated; use `log.options({ tag })` instead
 
 ---
 
@@ -65,9 +64,6 @@ log.level = "silent"; // Suppress all output
 
 // Restore to default
 log.level = "debug";
-
-// Deprecated: use log.options({ tag }) instead
-log.withTag("auth").info("This is deprecated");
 ```
 
 ---
@@ -91,9 +87,12 @@ Use `LOG` or `LOG_VERBOSE` to filter logs by tag or level:
 ```bash
 LOG=auth node app.js
 LOG=metrics,debug,auth* node app.js
+LOG="!foo;auth,debug" node app.js   # Negation: suppress 'foo' unless also matches 'auth' or 'debug'
 ```
 
-If neither is set, you can control output at runtime:
+- Wildcards are supported (e.g. `auth:*`, `metrics*`).
+- **Negation is supported:** Prefix a pattern with `!` to suppress logs matching that pattern, unless also matched by a positive pattern. Example: `LOG="!foo;auth,debug"` suppresses logs with tag `foo` unless they also match `auth` or `debug`.
+- If neither is set, you can control output at runtime:
 
 ```js
 log.level = "warn"; // Only warn, error, and log
