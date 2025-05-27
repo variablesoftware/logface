@@ -8,7 +8,7 @@
 //   - logface-runtimechange.test.ts
 // You may safely delete this file if all tests pass in the new structure.
 // Tests for LOG env suppressing logs not matching filter
-import logface from "../../src";
+import logface from "../../../src";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 
 describe("LOG env suppressing logs", () => {

@@ -1,8 +1,8 @@
 // tests/unit/logface-core.test.ts
 // Core logface API and formatting tests
-import logface from "../../src";
+import logface from '../../../src/index.ts';
 import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
-import { matchLogPrefix, matchFullLogPrefix } from './testLogPrefixHelpers';
+import { matchLogPrefix, matchFullLogPrefix } from '../helpers/testLogPrefixHelpers.ts';
 
 describe("logface core", () => {
   let spy: ReturnType<typeof vi.spyOn>;

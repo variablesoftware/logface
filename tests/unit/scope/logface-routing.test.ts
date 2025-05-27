@@ -1,9 +1,9 @@
 process.env.LOGFACE_NO_EMOJI = '1';
 // tests/unit/logface-routing.test.ts
 // Tests for correct routing to console methods and log level support
-import logface from "../../src";
+import logface from "../../../src";
 import { vi, describe, it, expect, beforeAll, afterAll } from "vitest";
-import { matchFullLogPrefix } from './testLogPrefixHelpers';
+import { matchFullLogPrefix } from '../helpers/testLogPrefixHelpers';
 
 beforeAll(() => {
   process.env._DEBUG_OLD = process.env.DEBUG;

@@ -2,9 +2,9 @@ process.env.LOGFACE_NO_EMOJI = '1';
 
 // tests/unit/logface-runtimechange.test.ts
 // Tests for LOG env changes at runtime
-import logface from "../../src";
+import logface from "../../../src";
 import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
-import { matchLogPrefix } from './testLogPrefixHelpers';
+import { matchLogPrefix } from '../helpers/testLogPrefixHelpers';
 
 beforeAll(() => {
   process.env.LOGFACE_NO_EMOJI = '1';

@@ -1,8 +1,8 @@
 // tests/unit/logface-formatting.test.ts
 // Tests for formatting options: timestamp, levelShort, and tag
-import logface from "../../src";
+import logface from "../../../src";
 import { vi, describe, it, expect } from "vitest";
-import { matchLogPrefix, matchLogPrefixWithTimestamp } from './testLogPrefixHelpers';
+import { matchLogPrefix, matchLogPrefixWithTimestamp } from '../helpers/testLogPrefixHelpers';
 
 describe("logface formatting options", () => {
   it("should format correctly with timestamp and levelShort false", () => {

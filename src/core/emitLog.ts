@@ -14,7 +14,7 @@ import {
   colorForLevel,
   styleTag,
   styleTimestamp,
-} from "../utils/colorForLevel.js";
+} from "../utils/colorForLevels/colorForLevel.js";
 import { formatWithReplacements } from "../utils/formatWithReplacements.js";
 import { globalLogOptions } from "../core/globalLogOptions.js";
 

@@ -1,8 +1,8 @@
 // tests/unit/logface-multimatch.test.ts
 // Tests for LOG env with multiple patterns and special characters
-import logface from "../../src";
+import logface from "../../../src";
 import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
-import { matchFullLogPrefix } from './testLogPrefixHelpers';
+import { matchFullLogPrefix } from '../helpers/testLogPrefixHelpers';
 
 describe("LOG env multi-pattern and special character filtering", () => {
   let infoSpy: ReturnType<typeof vi.spyOn>;

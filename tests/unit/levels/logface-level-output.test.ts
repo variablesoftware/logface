@@ -1,6 +1,6 @@
 // tests/unit/logface-level-output.test.ts
 // Test logface log level output inclusivity and color usage (if chalk is present)
-import logface from "../../src";
+import logface from "../../../src";
 import { describe, it, beforeEach, afterEach, expect, vi } from "vitest";
 
 const levels = ["debug", "info", "log", "warn", "error"] as const;

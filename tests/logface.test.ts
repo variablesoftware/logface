@@ -32,7 +32,7 @@ import {
   beforeAll,
   afterAll,
 } from "vitest";
-import { matchLogPrefix, matchFullLogPrefix } from './unit/testLogPrefixHelpers';
+import { matchLogPrefix, matchFullLogPrefix } from './unit/helpers/testLogPrefixHelpers';
 
 process.env.LOGFACE_NO_EMOJI = '1';
 

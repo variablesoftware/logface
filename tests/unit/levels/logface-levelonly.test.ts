@@ -1,6 +1,6 @@
 // tests/unit/logface-levelonly.test.ts
 // Tests for LOG env with only log level filtering
-import logface from "../../src";
+import logface from "../../../src";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 
 describe("LOG env log level only filtering", () => {

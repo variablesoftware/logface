@@ -8,10 +8,10 @@
 //   - logface-runtimechange.test.ts
 //   - logface-suppress.test.ts
 // You may safely delete this file if all tests pass in the new structure.
-import logface from "../../src";
+import logface from "../../../src";
 import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
-import { testIdVars } from '../../src/core/emitLog';
-import { testTagPrefixRegex, escapeRegExp, matchLogPrefix } from './testLogPrefixHelpers';
+import { testIdVars } from '../../../src/core/emitLog';
+import { testTagPrefixRegex, escapeRegExp, matchLogPrefix } from '../helpers/testLogPrefixHelpers';
 
 beforeAll(() => {
   process.env.LOGFACE_NO_EMOJI = '1';

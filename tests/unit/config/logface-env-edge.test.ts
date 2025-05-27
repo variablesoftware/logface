@@ -1,9 +1,9 @@
 // tests/unit/logface-env-edge.test.ts
 // Tests for LOG env edge cases and runtime changes
-import { log } from "../../src";
+import { log } from "../../../src";
 import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
-import { testIdVars } from '../../src/core/emitLog';
-import { testTagPrefixRegex, escapeRegExp, matchLogPrefix } from './testLogPrefixHelpers';
+import { testIdVars } from '../../../src/core/emitLog';
+import { testTagPrefixRegex, escapeRegExp, matchLogPrefix } from '../helpers/testLogPrefixHelpers';
 
 describe("LOG env edge cases", () => {
   let infoSpy: ReturnType<typeof vi.spyOn>;

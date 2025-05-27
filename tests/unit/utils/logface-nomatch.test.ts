@@ -2,9 +2,9 @@ process.env.LOGFACE_NO_EMOJI = '1';
 
 // tests/unit/logface-nomatch.test.ts
 // Tests for LOG env with no match, empty, or invalid patterns
-import logface from "../../src";
+import logface from "../../../src";
 import { vi, describe, it, expect, beforeEach, afterEach, beforeAll } from "vitest";
-import { matchFullLogPrefix } from './testLogPrefixHelpers';
+import { matchFullLogPrefix } from '../helpers/testLogPrefixHelpers';
 
 describe("LOG env no match, empty, or invalid patterns", () => {
   let infoSpy: ReturnType<typeof vi.spyOn>;
