@@ -10,6 +10,6 @@ corepack enable && corepack prepare yarn@4.9.1 --activate
 #echo ${PWD}
 #echo ${PATH}
 #yarn lint || exit 1
-#yarn lint && yarn build:test || exit 1
+yarn lint && yarn build:test || exit 1
 gitleaks dir . || exit 1
 ./scripts/smoke-local.sh || exit 1

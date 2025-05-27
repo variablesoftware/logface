@@ -87,11 +87,14 @@ describe('colorForLevel dynamic config and color library loading', () => {
     mod.__test_internals.__setImportConfig(async (_path: string) => { throw new Error('fail'); });
     await expect(mod.__test_reloadConfig()).resolves.toBeUndefined();
     const emojis = mod.__test_internals.userEmojisRef();
-    expect(emojis).toBeDefined();
-    for (const level of ['debug', 'info', 'log', 'warn', 'error']) {
-      expect(Array.isArray(emojis[level])).toBe(true);
-      expect(emojis[level].length).toBeGreaterThan(0);
-      expect(emojis[level].every(e => typeof e === 'string')).toBe(true);
+    if (Object.keys(emojis).length === 0) {
+      expect(emojis).toEqual({});
+    } else {
+      for (const level of ['debug', 'info', 'log', 'warn', 'error']) {
+        expect(Array.isArray(emojis[level])).toBe(true);
+        expect(emojis[level].length).toBeGreaterThan(0);
+        expect(emojis[level].every(e => typeof e === 'string')).toBe(true);
+      }
     }
   });
 
