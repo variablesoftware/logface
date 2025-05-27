@@ -36,7 +36,7 @@ export function __setImportColorLib(fn: (_name: string) => Promise<unknown>) {
 // Dynamically import color libraries if available (no require())
 (async () => {
   try {
-    chalk = (await __importColorLib('chalk')).default;
+    chalk = (await __importColorLib('chalk') as { default: unknown }).default;
   } catch {
     chalk = null; // Library not available
   }
@@ -46,12 +46,12 @@ export function __setImportColorLib(fn: (_name: string) => Promise<unknown>) {
     picocolors = null;
   }
   try {
-    colorette = await __importColorLib('colorette');
+    colorette = (await import('colorette')).default;
   } catch {
     colorette = null;
   }
   try {
-    kleur = await __importColorLib('kleur');
+    kleur = (await import('kleur')).default;
   } catch {
     kleur = null;
   }
@@ -75,9 +75,9 @@ async function reloadConfig() {
     const configPathMjs = path.resolve(process.cwd(), "logface.config.mjs");
     let config: unknown = null;
     if (fs.existsSync(configPathJs)) {
-      config = (await __importConfig(configPathJs)).default;
+      config = (await __importConfig(configPathJs) as { default: unknown }).default;
     } else if (fs.existsSync(configPathMjs)) {
-      config = (await __importConfig(configPathMjs)).default;
+      config = (await __importConfig(configPathMjs) as { default: unknown }).default;
     }
     if (config && typeof config === 'object') {
       const configObj = config as { emojis?: Record<string, string[]>; color?: boolean };
