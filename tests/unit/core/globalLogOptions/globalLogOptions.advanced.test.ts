@@ -14,10 +14,13 @@ describe('loadUserConfig: uncovered and advanced branches', () => {
     const absPath = path.join(process.cwd(), 'logface.temp.config.js');
     fs.writeFileSync(absPath, 'module.exports = { testKey: 123 }');
     process.env.LOGFACE_CONFIG = absPath;
+    // Clear require cache for the config file
+    delete require.cache[require.resolve(absPath)];
     const config = await loadUserConfig();
     expect(config).toBeDefined();
     expect(config && config.testKey).toBe(123);
     fs.unlinkSync(absPath);
+    delete process.env.LOGFACE_CONFIG;
   });
 
   it('should resolve configPath using LOGFACE_CONFIG relative path', async () => {
@@ -40,20 +43,22 @@ describe('loadUserConfig: uncovered and advanced branches', () => {
       fs.renameSync(jsPath, jsPath + '.bak');
       renamed = true;
     }
-    const mjsPath = path.join(process.cwd(), 'logface.config.mjs');
+    const mjsPath = path.join(process.cwd(), 'logface.temp.mjs');
     fs.writeFileSync(mjsPath, 'export default { mjsKey: 789 }', 'utf8');
+    process.env.LOGFACE_CONFIG = mjsPath;
     const config = await loadUserConfig();
     expect(config).toBeDefined();
     expect(config && config.mjsKey).toBe(789);
     fs.unlinkSync(mjsPath);
     if (renamed) fs.renameSync(jsPath + '.bak', jsPath);
+    delete process.env.LOGFACE_CONFIG;
   });
 
   it('should load example config if .js and .mjs are missing', async () => {
     const fs = await import('fs');
     const path = await import('path');
     const jsPath = path.join(process.cwd(), 'logface.config.js');
-    const mjsPath = path.join(process.cwd(), 'logface.config.mjs');
+    const mjsPath = path.join(process.cwd(), 'logface.temp.mjs');
     let renamedJs = false, renamedMjs = false;
     if (fs.existsSync(jsPath)) {
       fs.renameSync(jsPath, jsPath + '.bak');
@@ -63,13 +68,15 @@ describe('loadUserConfig: uncovered and advanced branches', () => {
       fs.renameSync(mjsPath, mjsPath + '.bak');
       renamedMjs = true;
     }
-    const examplePath = path.join(process.cwd(), 'logface.example.config.js');
+    const examplePath = path.join(process.cwd(), 'logface.temp.example.config.js');
     fs.writeFileSync(examplePath, 'module.exports = { exampleKey: 321 }');
+    process.env.LOGFACE_CONFIG = examplePath;
     const config = await loadUserConfig();
     expect(config).toBeDefined();
     expect(config && config.exampleKey).toBe(321);
     fs.unlinkSync(examplePath);
     if (renamedJs) fs.renameSync(jsPath + '.bak', jsPath);
     if (renamedMjs) fs.renameSync(mjsPath + '.bak', mjsPath);
+    delete process.env.LOGFACE_CONFIG;
   });
 });

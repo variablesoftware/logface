@@ -8,11 +8,11 @@ module.exports = {
 
   // Provide multiple emoji options per log level (as arrays)
   emojis: {
-    debug: ["🐛", "🔍", "🦠"],
-    info: ["ℹ️", "💡", "🧭"],
-    log: ["📝", "📄", "🗒️"],
+    debug: ["🐞", "🪰", "🪱", "🐜", "🐛", "🔍", "🦠"],
+    info: ["😎", "ℹ️", "💡", "🧭"],
+    log: ["🪵", "📝", "📄", "🗒️"],
     warn: ["⚠️", "🚧", "🛑"],
-    error: ["🔥", "💥", "💣"],
+    error: ["🤬", "🔥", "💥", "💣"],
   },
 
   // Optionally, you can specify color options as well

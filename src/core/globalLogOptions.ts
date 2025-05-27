@@ -48,6 +48,6 @@ export async function loadUserConfig(force = false): Promise<Record<string, unkn
 /**
  * Reloads user config at runtime, bypassing LOGFACE_NO_CONFIG.
  */
-export async function reloadUserConfig() {
-  return loadUserConfig(true);
+export async function reloadUserConfig(loadFn = loadUserConfig) {
+  return loadFn(true);
 }

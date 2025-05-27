@@ -10,13 +10,9 @@ describe('loadUserConfig: error and fallback branches', () => {
 
   it('should throw in test if config import fails', async () => {
     const fs = await import('fs');
-    const badFile = 'logface.config.js';
-    let renamed = false;
-    if (fs.existsSync(badFile)) {
-      fs.renameSync(badFile, badFile + '.bak');
-      renamed = true;
-    }
+    const badFile = 'logface.bad.config.js';
     fs.writeFileSync(badFile, 'module.exports = (() => { throw new Error("fail"); })();');
+    process.env.LOGFACE_CONFIG = badFile;
     let threw = false;
     try {
       await loadUserConfig();
@@ -26,7 +22,7 @@ describe('loadUserConfig: error and fallback branches', () => {
     }
     expect(threw).toBe(true);
     fs.unlinkSync(badFile);
-    if (renamed) fs.renameSync(badFile + '.bak', badFile);
+    delete process.env.LOGFACE_CONFIG;
   });
 
   it('should return undefined if configPath is falsy (no config files and no LOGFACE_CONFIG)', async () => {

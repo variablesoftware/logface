@@ -31,10 +31,18 @@ describe('logface config loading', () => {
 
   it('should load config file by default', async () => {
     if (skipAll) return;
+    // Ensure a temp config file exists for the test
+    const fs = await import('fs');
+    const path = await import('path');
+    const tempConfigPath = path.join(process.cwd(), 'logface.temp.config.mjs');
+    fs.writeFileSync(tempConfigPath, 'export default { emojis: { debug: ["X"] } }', 'utf8');
+    process.env.LOGFACE_CONFIG = tempConfigPath;
     await resetConfigEnv(false);
     const config = await logface.loadUserConfig();
     expect(config).toBeDefined();
     expect(config && config.emojis).toBeDefined();
+    fs.unlinkSync(tempConfigPath);
+    delete process.env.LOGFACE_CONFIG;
   });
 
   it('should NOT load config file if LOGFACE_NO_CONFIG=1', async () => {
@@ -46,9 +54,17 @@ describe('logface config loading', () => {
 
   it('should force load config even if LOGFACE_NO_CONFIG=1 when forced', async () => {
     if (skipAll) return;
+    // Ensure a temp config file exists for the test
+    const fs = await import('fs');
+    const path = await import('path');
+    const tempConfigPath = path.join(process.cwd(), 'logface.temp.config.mjs');
+    fs.writeFileSync(tempConfigPath, 'export default { emojis: { debug: ["X"] } }', 'utf8');
+    process.env.LOGFACE_CONFIG = tempConfigPath;
     await resetConfigEnv(true);
     const config = await logface.loadUserConfig(true);
     expect(config).toBeDefined();
     expect(config && config.emojis).toBeDefined();
+    fs.unlinkSync(tempConfigPath);
+    delete process.env.LOGFACE_CONFIG;
   });
 });
