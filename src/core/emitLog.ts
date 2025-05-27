@@ -61,9 +61,9 @@ export function emitLog(
     .join("");
   // Only filter debug logs if LOG/LOG_VERBOSE is set
   const filter = env.LOG || env.LOG_VERBOSE || "";
-  // If LOG/LOG_VERBOSE is set, use filtering logic; otherwise, always emit debug logs
+  // Support both comma and semicolon as delimiters for LOG patterns
   const filters = filter
-    .split(",")
+    .split(/[,;]+/)
     .map((s: string) => s.trim())
     .filter((s: string) => Boolean(s));
 
@@ -72,11 +72,32 @@ export function emitLog(
 
   let shouldLog = true;
   if (filters.length > 0) {
-    const tagMatch = filters.some((p: string) => matchesScopeFilter(tag, p));
-    const levelMatch = filters.some((p: string) =>
-      matchesScopeFilter(level, p),
-    );
-    shouldLog = tagMatch || levelMatch;
+    // Filter out patterns that are not valid (must contain at least one alphanumeric or wildcard)
+    const validPattern = (p: string) => /[\w*]/.test(p.replace(/^!/, ''));
+    const validFilters = filters.filter(validPattern);
+    if (validFilters.length === 0) {
+      // All patterns are invalid: match nothing
+      shouldLog = false;
+    } else {
+      // Separate negated and positive patterns
+      const negated = validFilters.filter((p: string) => p.startsWith('!'));
+      const positive = validFilters.filter((p: string) => !p.startsWith('!'));
+      const tagMatch = positive.some((p: string) => matchesScopeFilter(tag, p));
+      const levelMatch = positive.some((p: string) => matchesScopeFilter(level, p));
+      const positiveMatch = tagMatch || levelMatch;
+      const negationMatch = negated.some((p: string) => {
+        const pat = p.slice(1);
+        return matchesScopeFilter(tag, pat) || matchesScopeFilter(level, pat);
+      });
+      // Only suppress if a negation matches AND no positive matches
+      if (negationMatch && !positiveMatch) {
+        shouldLog = false;
+      } else if (positive.length > 0) {
+        shouldLog = positiveMatch;
+      } else {
+        shouldLog = !negationMatch;
+      }
+    }
   } else {
     // Use runtime log level if no LOG/LOG_VERBOSE
     const minLevelIdx = logLevelOrder.indexOf(runtimeLogLevel);

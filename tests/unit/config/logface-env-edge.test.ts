@@ -67,4 +67,28 @@ describe("LOG env edge cases", () => {
       "level match"
     );
   });
+
+  it("should support negation in LOG env patterns", () => {
+    process.env.LOG = "!foo;auth,debug";
+    process.env.DEBUG = '1'; // Ensure debug logs are emitted
+    const debugSpy = vi.spyOn(console, "debug").mockImplementation(() => {});
+    log.options({ tag: "foo" }).info("should not log");
+    log.options({ tag: "auth" }).info("should log auth");
+    log.options({ tag: "bar" }).debug("should not log");
+    log.options({ tag: "baz" }).info("should not log");
+    log.options({ tag: "debug" }).debug("should log debug");
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'auth')),
+      "should log auth"
+    );
+    expect(debugSpy).toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('D', 'debug')),
+      "should log debug"
+    );
+    expect(infoSpy).not.toHaveBeenCalledWith(
+      expect.stringMatching(matchLogPrefix('I', 'foo')),
+      "should not log"
+    );
+    debugSpy.mockRestore();
+  });
 });

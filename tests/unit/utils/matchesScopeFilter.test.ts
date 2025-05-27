@@ -25,4 +25,13 @@ describe('matchesScopeFilter', () => {
   it('returns false for unknown filter type', () => {
     expect(matchesScopeFilter('foo', 123 as any)).toBe(false);
   });
+
+  it('supports negation patterns', () => {
+    expect(matchesScopeFilter('foo', '!foo')).toBe(false);
+    expect(matchesScopeFilter('bar', '!foo')).toBe(true);
+    expect(matchesScopeFilter('authLogin', '!auth*')).toBe(false);
+    expect(matchesScopeFilter('other', '!auth*')).toBe(true);
+    expect(matchesScopeFilter('auth:signup', '!auth:*')).toBe(false);
+    expect(matchesScopeFilter('auth:signup', '!bar')).toBe(true);
+  });
 });
