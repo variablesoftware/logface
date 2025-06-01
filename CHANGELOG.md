@@ -1,3 +1,10 @@
+## [0.5.2](https://github.com/variablesoftware/logface/compare/v0.5.1...v0.5.2) (2025-06-01)
+
+
+### Bug Fixes
+
+* Refactor code structure for improved readability and maintainability ([347a094](https://github.com/variablesoftware/logface/commit/347a09407f466e26cddc7180de3deb98c3912d83))
+
 ## [0.5.1](https://github.com/variablesoftware/logface/compare/v0.5.0...v0.5.1) (2025-05-27)
 
 
