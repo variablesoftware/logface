@@ -1,6 +1,6 @@
 // tests/build.test.ts
 // This test verifies that the built package in 'dist/' is valid and exports the expected API.
-// It should be run after 'yarn build'.
+// It should be run after 'pnpm run build'.
 
 import { describe, it, expect } from "vitest";
 import { existsSync } from "fs";
@@ -10,7 +10,7 @@ const distPath = join(__dirname, "../dist/index.js");
 
 if (!existsSync(distPath)) {
   describe("build output", () => {
-    it.skip("build output missing: dist/index.js not found. Run 'yarn build' before testing.", () => {
+    it.skip("build output missing: dist/index.js not found. Run 'pnpm run build' before testing.", () => {
       // Skipped
     });
   });

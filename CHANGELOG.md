@@ -64,7 +64,7 @@
 
 ### Bug Fixes
 
-- add set -x to pre-commit and pre-push hooks for better debugging; update build scripts to use yarn ([767b2f7](https://github.com/variablesoftware/logface/commit/767b2f7b6bd748b917b20772822efd8c97fc34f4))
+- add set -x to pre-commit and pre-push hooks for better debugging; update build scripts to use pnpm ([767b2f7](https://github.com/variablesoftware/logface/commit/767b2f7b6bd748b917b20772822efd8c97fc34f4))
 - correct export statement for Logger type ([ec3c112](https://github.com/variablesoftware/logface/commit/ec3c112584a120731c2f7e90b6c9369edaf694c3))
 - reorder lint and build:test commands in pre-push hook for improved execution flow ([bd78f56](https://github.com/variablesoftware/logface/commit/bd78f5648424cee4e47d9b6b10a031f3f90f524d))
 - update .gitignore to include additional archive formats; remove obsolete npm smoke test and related files ([9c06d67](https://github.com/variablesoftware/logface/commit/9c06d6738e68dbeef68704e98e92b28579c76da7))

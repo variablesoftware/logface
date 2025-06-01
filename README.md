@@ -31,9 +31,7 @@
 ## 🚀 Install
 
 ```bash
-npm install @variablesoftware/logface
-# or
-yarn add @variablesoftware/logface
+pnpm add @variablesoftware/logface
 ```
 
 ---

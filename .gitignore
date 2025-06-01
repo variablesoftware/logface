@@ -9,16 +9,8 @@ logface.config.mjs
 # junk text, find a better name OK?
 docs/text*.txt
 
-# Yarn PnP loader files (Yarn 2+)
-.pnp.*
-.yarn/cache/
-.yarn/unplugged/
-.yarn/build-state.yml
-.yarn/install-state.gz
-
 # Node dependencies
 node_modules/
-.yarn/
 
 # Output directories
 dist/
@@ -32,6 +24,7 @@ coverage/
 *.log
 .DS_Store
 Thumbs.db
+.pnpm-debug.log
 
 # Test snapshots / temp
 *.snap

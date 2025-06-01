@@ -22,15 +22,20 @@ testOrSkip(
   "npm package can be installed and imported (smoke test)",
   async () => {
     try {
-      // Pack the current package
-      run("npm pack");
+      // Ensure build output exists before packing
+      const distPath = path.join(origCwd, "dist", "index.js");
+      if (!fs.existsSync(distPath)) {
+        throw new Error(`Build output missing: ${distPath} not found. Run 'pnpm run build' before smoke test.`);
+      }
+      // Pack the current package with pnpm
+      run("pnpm pack");
       const pkg = fs.readdirSync(origCwd).find((f) => f.endsWith(".tgz"));
       if (!pkg) throw new Error("No package tarball found");
 
       // Init a new project in the temp dir
       process.chdir(tmpDir);
-      run("npm init -y");
-      run(`npm install ${path.join(origCwd, pkg)}`);
+      fs.writeFileSync("package.json", "{}\n");
+      run(`pnpm install ${path.join(origCwd, pkg)}`);
 
       // Try to import the package
       const pkgJson = JSON.parse(
