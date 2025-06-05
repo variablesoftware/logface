@@ -50,7 +50,7 @@
     "minify:options": "pnpm terser --timings --compress --mangle --toplevel --source-map includeSources ",
     "minify": "pnpm run minify:options dist/*.js --output dist/index.min.js",
     "prebuild": "pnpm run clean",
-    "prepublishOnly": "pnpm run build:test",
+    "prepublishOnly": "pnpm run build && pnpm run test",
     "clean": "rm -rf dist",
     "clean:all:tags": "rm -rf dist && git tag -d $(git tag)",
     "dev": "pnpm vitest watch",

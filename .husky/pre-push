@@ -6,6 +6,6 @@ nvm use 22 --lts
 set -x
 
 corepack enable && corepack prepare pnpm@latest --activate
-pnpm lint && pnpm run build:test || exit 1
+pnpm run lint && pnpm run build && pnpm run test || exit 1
 gitleaks dir . || exit 1
 ./scripts/smoke-local.sh || exit 1
