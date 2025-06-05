@@ -21,11 +21,17 @@ runs:
         which pnpm
         env | grep -E 'PNPM|NPM|NODE|PATH'
       shell: bash
-    - run: pnpm install --frozen-lockfile
+    - name: install immutable
+      run: pnpm install --frozen-lockfile
       shell: bash
-    - run: pnpm run lint
-    - run: pnpm run build
-    - run: pnpm vitest --coverage --reporter=verbose
+    - name: lint
+      run: pnpm run lint
+      shell: bash
+    - name: build
+      run: pnpm run build
+      shell: bash
+    - name: Run Tests
+      run: pnpm vitest --coverage --reporter=verbose
       env:
         SMOKE: 1
         DEBUG: 1
