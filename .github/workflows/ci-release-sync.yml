@@ -110,49 +110,49 @@ jobs:
           NPM_TOKEN: ${{ secrets.VS_NPM_TOKEN }}
           HUSKY: 0
 
-  sync-stage-with-main:
-    name: Sync Stage with Main (after release)
-    needs: release
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - name: Checkout all branches
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set up Git user
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-      - name: Fetch all branches
-        run: |
-          git fetch origin main
-          git fetch origin stage
-      - name: Check if stage can be fast-forwarded to main
-        id: ffcheck
-        run: |
-          git checkout stage
-          if git merge-base --is-ancestor stage main; then
-            echo "can_ff=true" >> $GITHUB_OUTPUT
-          else
-            echo "can_ff=false" >> $GITHUB_OUTPUT
-          fi
-      - name: Fast-forward stage to main (if possible)
-        if: steps.ffcheck.outputs.can_ff == 'true'
-        run: |
-          git checkout stage
-          git merge --ff-only main
-          git push origin stage
-      - name: Create PR from main to stage (if fast-forward not possible)
-        if: steps.ffcheck.outputs.can_ff == 'false'
-        uses: repo-sync/pull-request@v2
-        with:
-          source_branch: main
-          destination_branch: stage
-          pr_title: "chore: sync stage with main after release"
-          pr_body: "Automated PR to sync stage with main after a semantic-release bump."
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+  # sync-stage-with-main:
+  #   name: Sync Stage with Main (after release)
+  #   needs: release
+  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: write
+  #     pull-requests: write
+  #   steps:
+  #     - name: Checkout all branches
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Set up Git user
+  #       run: |
+  #         git config user.name "github-actions[bot]"
+  #         git config user.email "github-actions[bot]@users.noreply.github.com"
+  #     - name: Fetch all branches
+  #       run: |
+  #         git fetch origin main
+  #         git fetch origin stage
+  #     - name: Check if stage can be fast-forwarded to main
+  #       id: ffcheck
+  #       run: |
+  #         git checkout stage
+  #         if git merge-base --is-ancestor stage main; then
+  #           echo "can_ff=true" >> $GITHUB_OUTPUT
+  #         else
+  #           echo "can_ff=false" >> $GITHUB_OUTPUT
+  #         fi
+  #     - name: Fast-forward stage to main (if possible)
+  #       if: steps.ffcheck.outputs.can_ff == 'true'
+  #       run: |
+  #         git checkout stage
+  #         git merge --ff-only main
+  #         git push origin stage
+  #     - name: Create PR from main to stage (if fast-forward not possible)
+  #       if: steps.ffcheck.outputs.can_ff == 'false'
+  #       uses: repo-sync/pull-request@v2
+  #       with:
+  #         source_branch: main
+  #         destination_branch: stage
+  #         pr_title: "chore: sync stage with main after release"
+  #         pr_body: "Automated PR to sync stage with main after a semantic-release bump."
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
