@@ -93,16 +93,16 @@
     "@types/node": "^24.0.3",
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
-    "@vitest/coverage-v8": "^3.2.2",
+    "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-tsdoc": "^0.4.0",
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "semantic-release": "^24.2.5",
-    "terser": "^5.43.0",
+    "terser": "^5.43.1",
     "tslib": "^2.8.1",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.2"
+    "vitest": "^3.2.4"
   }
 }
