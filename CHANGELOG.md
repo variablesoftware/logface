@@ -1,3 +1,5 @@
+# [0.7.0](https://github.com/variablesoftware/logface/compare/v0.6.1...v0.7.0) (2025-06-20)
+
 ## [0.6.1](https://github.com/variablesoftware/logface/compare/v0.6.0...v0.6.1) (2025-06-19)
 
 # [0.6.0](https://github.com/variablesoftware/logface/compare/v0.5.2...v0.6.0) (2025-06-07)
