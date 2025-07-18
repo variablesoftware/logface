@@ -28,10 +28,11 @@ on:
       - 'renovate/**'
       - 'chore/**'
       - 'test/**'
-
+permissions:
+  contents: write
 jobs:
   prune_releases:
     uses: variablesoftware/github-workflows/.github/workflows/prune-releases.yaml@main
     with:
-      releases_to_keep: 5  # Optional, defaults to 3
+      releases_to_keep: 2  # Optional, defaults to 3
     secrets: inherit
